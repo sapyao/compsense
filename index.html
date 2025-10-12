@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CompSense - Overwatch 2 Team Composition Analyzer">
+    <title>Overwatch 2 CompSense - Team Compositions</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/overwatch.css">
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+</head>
+<body>
+    <div id="welcome-screen" class="welcome-overlay">
+        <div class="welcome-content">
+            <div class="welcome-logo">
+                <img src="images/overwatch-logo.svg" alt="Overwatch 2 Logo" class="ow-logo">
+                <h1>CompSense</h1>
+            </div>
+            <h2>Welcome to Overwatch 2 CompSense</h2>
+            <p>Find the perfect team composition for every map and situation</p>
+            <button id="start-playing-btn" class="start-button">START PLAYING</button>
+        </div>
+    </div>
+    
+    <div id="map-selection" class="overlay-screen" style="display: none;">
+        <div class="selection-header">
+            <h2>Select a Map</h2>
+            <button class="close-button">&times;</button>
+        </div>
+        <div class="map-grid">
+            <div class="map-category">
+                <h3>Control</h3>
+                <div class="map-options">
+                    <div class="map-option" data-map="lijiang">
+                        <div class="map-image placeholder-image">Lijiang Tower</div>
+                        <span class="map-name">Lijiang Tower</span>
+                    </div>
+                    <div class="map-option" data-map="nepal">
+                        <div class="map-image placeholder-image">Nepal</div>
+                        <span class="map-name">Nepal</span>
+                    </div>
+                    <div class="map-option" data-map="oasis">
+                        <div class="map-image placeholder-image">Oasis</div>
+                        <span class="map-name">Oasis</span>
+                    </div>
+                    <div class="map-option" data-map="ilios">
+                        <div class="map-image placeholder-image">Ilios</div>
+                        <span class="map-name">Ilios</span>
+                    </div>
+                    <div class="map-option" data-map="antarctic-peninsula">
+                        <div class="map-image placeholder-image">Antarctic Peninsula</div>
+                        <span class="map-name">Antarctic Peninsula</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-category">
+                <h3>Escort</h3>
+                <div class="map-options">
+                    <div class="map-option" data-map="dorado">
+                        <div class="map-image placeholder-image">Dorado</div>
+                        <span class="map-name">Dorado</span>
+                    </div>
+                    <div class="map-option" data-map="havana">
+                        <div class="map-image placeholder-image">Havana</div>
+                        <span class="map-name">Havana</span>
+                    </div>
+                    <div class="map-option" data-map="junkertown">
+                        <div class="map-image placeholder-image">Junkertown</div>
+                        <span class="map-name">Junkertown</span>
+                    </div>
+                    <div class="map-option" data-map="circuit-royal">
+                        <div class="map-image placeholder-image">Circuit Royal</div>
+                        <span class="map-name">Circuit Royal</span>
+                    </div>
+                    <div class="map-option" data-map="shambali">
+                        <div class="map-image placeholder-image">Shambali Monastery</div>
+                        <span class="map-name">Shambali Monastery</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-category">
+                <h3>Hybrid</h3>
+                <div class="map-options">
+                    <div class="map-option" data-map="kings-row">
+                        <div class="map-image placeholder-image">King's Row</div>
+                        <span class="map-name">King's Row</span>
+                    </div>
+                    <div class="map-option" data-map="eichenwalde">
+                        <div class="map-image placeholder-image">Eichenwalde</div>
+                        <span class="map-name">Eichenwalde</span>
+                    </div>
+                    <div class="map-option" data-map="numbani">
+                        <div class="map-image placeholder-image">Numbani</div>
+                        <span class="map-name">Numbani</span>
+                    </div>
+                    <div class="map-option" data-map="midtown">
+                        <div class="map-image placeholder-image">Midtown</div>
+                        <span class="map-name">Midtown</span>
+                    </div>
+                    <div class="map-option" data-map="paraiso">
+                        <div class="map-image placeholder-image">Paraíso</div>
+                        <span class="map-name">Paraíso</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-category">
+                <h3>Push</h3>
+                <div class="map-options">
+                    <div class="map-option" data-map="new-queen-street">
+                        <div class="map-image placeholder-image">New Queen Street</div>
+                        <span class="map-name">New Queen Street</span>
+                    </div>
+                    <div class="map-option" data-map="colosseo">
+                        <div class="map-image placeholder-image">Colosseo</div>
+                        <span class="map-name">Colosseo</span>
+                    </div>
+                    <div class="map-option" data-map="esperanca">
+                        <div class="map-image placeholder-image">Esperança</div>
+                        <span class="map-name">Esperança</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-category">
+                <h3>Flashpoint</h3>
+                <div class="map-options">
+                    <div class="map-option" data-map="suravasa">
+                        <div class="map-image placeholder-image">Suravasa</div>
+                        <span class="map-name">Suravasa</span>
+                    </div>
+                    <div class="map-option" data-map="new-junk-city">
+                        <div class="map-image placeholder-image">New Junk City</div>
+                        <span class="map-name">New Junk City</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="hero-ban" class="overlay-screen" style="display: none;">
+        <div class="selection-header">
+            <h2>Select Banned Heroes</h2>
+            <button class="close-button">&times;</button>
+        </div>
+        <div class="ban-info">
+            <p>Select up to 4 banned heroes for this match</p>
+            <span class="ban-count">0/4 selected</span>
+        </div>
+        <div class="hero-ban-grid">
+            <div class="role-category">
+                <h3>Tank</h3>
+                <div class="hero-ban-options tank-heroes">
+                    <div class="hero-ban-option" data-hero="doomfist">
+                        <div class="hero-image placeholder-image">Doomfist</div>
+                        <span class="hero-name">Doomfist</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="dva">
+                        <div class="hero-image placeholder-image">D.Va</div>
+                        <span class="hero-name">D.Va</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="junker-queen">
+                        <div class="hero-image placeholder-image">Junker Queen</div>
+                        <span class="hero-name">Junker Queen</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="orisa">
+                        <div class="hero-image placeholder-image">Orisa</div>
+                        <span class="hero-name">Orisa</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="ramattra">
+                        <div class="hero-image placeholder-image">Ramattra</div>
+                        <span class="hero-name">Ramattra</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="reinhardt">
+                        <div class="hero-image placeholder-image">Reinhardt</div>
+                        <span class="hero-name">Reinhardt</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="roadhog">
+                        <div class="hero-image placeholder-image">Roadhog</div>
+                        <span class="hero-name">Roadhog</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="sigma">
+                        <div class="hero-image placeholder-image">Sigma</div>
+                        <span class="hero-name">Sigma</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="winston">
+                        <div class="hero-image placeholder-image">Winston</div>
+                        <span class="hero-name">Winston</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="wrecking-ball">
+                        <div class="hero-image placeholder-image">Wrecking Ball</div>
+                        <span class="hero-name">Wrecking Ball</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="zarya">
+                        <div class="hero-image placeholder-image">Zarya</div>
+                        <span class="hero-name">Zarya</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-category">
+                <h3>Damage</h3>
+                <div class="hero-ban-options damage-heroes">
+                    <div class="hero-ban-option" data-hero="ashe">
+                        <div class="hero-image placeholder-image">Ashe</div>
+                        <span class="hero-name">Ashe</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="bastion">
+                        <div class="hero-image placeholder-image">Bastion</div>
+                        <span class="hero-name">Bastion</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="cassidy">
+                        <div class="hero-image placeholder-image">Cassidy</div>
+                        <span class="hero-name">Cassidy</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="echo">
+                        <div class="hero-image placeholder-image">Echo</div>
+                        <span class="hero-name">Echo</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="genji">
+                        <div class="hero-image placeholder-image">Genji</div>
+                        <span class="hero-name">Genji</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="hanzo">
+                        <div class="hero-image placeholder-image">Hanzo</div>
+                        <span class="hero-name">Hanzo</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="junkrat">
+                        <div class="hero-image placeholder-image">Junkrat</div>
+                        <span class="hero-name">Junkrat</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="mei">
+                        <div class="hero-image placeholder-image">Mei</div>
+                        <span class="hero-name">Mei</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="pharah">
+                        <div class="hero-image placeholder-image">Pharah</div>
+                        <span class="hero-name">Pharah</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="reaper">
+                        <div class="hero-image placeholder-image">Reaper</div>
+                        <span class="hero-name">Reaper</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="sojourn">
+                        <div class="hero-image placeholder-image">Sojourn</div>
+                        <span class="hero-name">Sojourn</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="soldier76">
+                        <div class="hero-image placeholder-image">Soldier: 76</div>
+                        <span class="hero-name">Soldier: 76</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="sombra">
+                        <div class="hero-image placeholder-image">Sombra</div>
+                        <span class="hero-name">Sombra</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="symmetra">
+                        <div class="hero-image placeholder-image">Symmetra</div>
+                        <span class="hero-name">Symmetra</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="torbjorn">
+                        <div class="hero-image placeholder-image">Torbjörn</div>
+                        <span class="hero-name">Torbjörn</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="tracer">
+                        <div class="hero-image placeholder-image">Tracer</div>
+                        <span class="hero-name">Tracer</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="widowmaker">
+                        <div class="hero-image placeholder-image">Widowmaker</div>
+                        <span class="hero-name">Widowmaker</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-category">
+                <h3>Support</h3>
+                <div class="hero-ban-options support-heroes">
+                    <div class="hero-ban-option" data-hero="ana">
+                        <div class="hero-image placeholder-image">Ana</div>
+                        <span class="hero-name">Ana</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="baptiste">
+                        <div class="hero-image placeholder-image">Baptiste</div>
+                        <span class="hero-name">Baptiste</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="brigitte">
+                        <div class="hero-image placeholder-image">Brigitte</div>
+                        <span class="hero-name">Brigitte</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="illari">
+                        <div class="hero-image placeholder-image">Illari</div>
+                        <span class="hero-name">Illari</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="kiriko">
+                        <div class="hero-image placeholder-image">Kiriko</div>
+                        <span class="hero-name">Kiriko</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="lifeweaver">
+                        <div class="hero-image placeholder-image">Lifeweaver</div>
+                        <span class="hero-name">Lifeweaver</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="lucio">
+                        <div class="hero-image placeholder-image">Lúcio</div>
+                        <span class="hero-name">Lúcio</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="mercy">
+                        <div class="hero-image placeholder-image">Mercy</div>
+                        <span class="hero-name">Mercy</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="moira">
+                        <div class="hero-image placeholder-image">Moira</div>
+                        <span class="hero-name">Moira</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="zenyatta">
+                        <div class="hero-image placeholder-image">Zenyatta</div>
+                        <span class="hero-name">Zenyatta</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ban-actions">
+            <button class="reset-bans-btn">Reset Selections</button>
+            <button class="confirm-bans-btn">Find Compositions</button>
+        </div>
+    </div>
+    
+    <div id="composition-results" class="overlay-screen" style="display: none;">
+        <div class="selection-header">
+            <h2>Recommended Compositions</h2>
+            <button class="close-button">&times;</button>
+        </div>
+        <div class="selected-info">
+            <div class="map-info">
+                <h3>Map: <span id="selected-map">King's Row</span></h3>
+                <div class="map-type"><span id="map-type">Hybrid</span></div>
+            </div>
+            <div class="banned-heroes">
+                <h3>Banned Heroes:</h3>
+                <div class="banned-hero-icons" id="banned-heroes-list">
+                    <!-- Banned heroes will be displayed here dynamically -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="recommended-comps">
+            <div class="comp-card primary-comp">
+                <h3>Primary Recommendation</h3>
+                <div class="comp-heroes">
+                    <div class="hero-icon tank">Reinhardt</div>
+                    <div class="hero-icon damage">Reaper</div>
+                    <div class="hero-icon damage">Mei</div>
+                    <div class="hero-icon support">Lucio</div>
+                    <div class="hero-icon support">Moira</div>
+                </div>
+                <div class="comp-details">
+                    <h4>Rush Composition</h4>
+                    <p>Strong on King's Row due to narrow corridors and close-quarter combat areas.</p>
+                    <div class="comp-strength">
+                        <span class="strength-label">Map Effectiveness:</span>
+                        <div class="strength-bar">
+                            <div class="strength-fill" style="width: 90%"></div>
+                        </div>
+                        <span class="strength-value">90%</span>
+                    </div>
+                    <div class="strategy-tips">
+                        <h4>Strategy Tips:</h4>
+                        <ul>
+                            <li>Use Lucio's speed boost to quickly engage through choke points</li>
+                            <li>Mei's wall can split enemy team or block key abilities</li>
+                            <li>Moira's healing output keeps the team sustained in close battles</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comp-card alternative-comp">
+                <h3>Alternative Option</h3>
+                <div class="comp-heroes">
+                    <div class="hero-icon tank">Zarya</div>
+                    <div class="hero-icon damage">Soldier: 76</div>
+                    <div class="hero-icon damage">Cassidy</div>
+                    <div class="hero-icon support">Baptiste</div>
+                    <div class="hero-icon support">Ana</div>
+                </div>
+                <div class="comp-details">
+                    <h4>Brawl Composition</h4>
+                    <p>Good alternative with more mid-range damage capabilities.</p>
+                    <div class="comp-strength">
+                        <span class="strength-label">Map Effectiveness:</span>
+                        <div class="strength-bar">
+                            <div class="strength-fill" style="width: 75%"></div>
+                        </div>
+                        <span class="strength-value">75%</span>
+                    </div>
+                    <div class="strategy-tips">
+                        <h4>Strategy Tips:</h4>
+                        <ul>
+                            <li>Use high ground control on streets phase</li>
+                            <li>Zarya bubbles can protect Ana from flankers</li>
+                            <li>Baptiste's immortality field is crucial for pushing through chokes</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="comp-actions">
+                <button class="new-search-btn">New Search</button>
+                <button class="view-details-btn">View Detailed Analysis</button>
+            </div>
+        </div>
+    </div>
+    
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>CompSense</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="heroes.html">Heroes</a></li>
+                <li><a href="compositions.html">Team Comps</a></li>
+                <li><a href="meta.html">Current Meta</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Welcome to Overwatch 2 CompSense</h2>
+                <p>Find the perfect team composition for every map and situation</p>
+                <button class="cta-button" id="main-start-btn">START PLAYING</button>
+            </div>
+            <div class="hero-overlay"></div>
+        </section>
+        
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">🗺️</div>
+                <h3>Map-Specific Compositions</h3>
+                <p>Get tailored team recommendations for each map in the Overwatch 2 pool</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚫</div>
+                <h3>Ban-Aware Analysis</h3>
+                <p>Adjust recommendations based on banned heroes for tournament play</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Meta Insights</h3>
+                <p>Stay current with the latest professional team compositions</p>
+            </div>
+        </section>
+        
+        <section class="quick-access">
+            <h2>Quick Access</h2>
+            <div class="quick-buttons">
+                <button class="quick-button" id="maps-btn">Browse Maps</button>
+                <button class="quick-button" id="heroes-btn">Hero Database</button>
+                <button class="quick-button" id="meta-btn">Current Meta</button>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 CompSense. All rights reserved. Not affiliated with Blizzard Entertainment.</p>
+        <div class="social-links">
+            <a href="#">Twitter</a>
+            <a href="#">Discord</a>
+            <a href="#">YouTube</a>
+            <a href="#">Reddit</a>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/compsense.js"></script>
+</body>
+</html>
