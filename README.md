@@ -7,7 +7,7 @@ A static website for finding optimal Overwatch 2 team compositions based on maps
 Overwatch 2 CompSense helps players determine the best team compositions for competitive play by:
 
 1. Selecting a specific map from the Overwatch 2 map pool
-2. Indicating which heroes are banned (up to 5 heroes)
+2. Indicating which heroes are banned (up to 4 heroes)
 3. Receiving recommended team compositions optimized for the selected map and available heroes
 
 ## Website Flow

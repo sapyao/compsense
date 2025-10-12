@@ -1,0 +1,377 @@
+/* Map and Hero Image Styles */
+
+/* Add text overlay for images with names */
+.map-image .image-label,
+.hero-image .image-label {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    text-align: center;
+    padding: 4px 0;
+    font-size: 0.8rem;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.map-option:hover .image-label,
+.hero-ban-option:hover .image-label {
+    opacity: 1;
+}
+
+/* Map-specific backgrounds */
+
+/* CONTROL */
+.map-image[data-map="antarctic-peninsula"] {
+    background-image: url('../images/maps/antarctic-peninsula.png');
+}
+
+.map-image[data-map="busan"] {
+    background-image: url('../images/maps/busan.png');
+}
+
+.map-image[data-map="ilios"] {
+    background-image: url('../images/maps/ilios.png');
+}
+
+.map-image[data-map="lijiang"] {
+    background-image: url('../images/maps/lijiang.png');
+}
+
+.map-image[data-map="oasis"] {
+    background-image: url('../images/maps/oasis.png');
+}
+
+.map-image[data-map="nepal"] {
+    background-image: url('../images/maps/nepal.png');
+}
+
+.map-image[data-map="samoa"] {
+    background-image: url('../images/maps/samoa.png');
+}
+
+/* ESCORT */
+.map-image[data-map="circuit-royal"] {
+    background-image: url('../images/maps/circuit-royal.png');
+}
+
+.map-image[data-map="dorado"] {
+    background-image: url('../images/maps/dorado.png');
+}
+
+.map-image[data-map="havana"] {
+    background-image: url('../images/maps/havana.png');
+}
+
+.map-image[data-map="junkertown"] {
+    background-image: url('../images/maps/junkertown.png');
+}
+
+.map-image[data-map="rialto"] {
+    background-image: url('../images/maps/rialto.png');
+}
+
+.map-image[data-map="route66"] {
+    background-image: url('../images/maps/route66.png');
+}
+
+.map-image[data-map="shambali"] {
+    background-image: url('../images/maps/shambali.png');
+}
+
+.map-image[data-map="gibraltar"] {
+    background-image: url('../images/maps/gibraltar.png');
+}
+
+/* HYBRID */
+.map-image[data-map="blizzard-world"] {
+    background-image: url('../images/maps/blizzard-world.png');
+}
+
+.map-image[data-map="eichenwalde"] {
+    background-image: url('../images/maps/eichenwalde.png');
+}
+
+.map-image[data-map="hollywood"] {
+    background-image: url('../images/maps/hollywood.png');
+}
+
+.map-image[data-map="kings-row"] {
+    background-image: url('../images/maps/kings-row.png');
+}
+
+.map-image[data-map="midtown"] {
+    background-image: url('../images/maps/midtown.png');
+}
+
+.map-image[data-map="numbani"] {
+    background-image: url('../images/maps/numbani.png');
+}
+
+.map-image[data-map="paraiso"] {
+    background-image: url('../images/maps/paraiso.png');
+}
+
+
+/* PUSH */
+.map-image[data-map="colosseo"] {
+    background-image: url('../images/maps/colosseo.png');
+}
+
+.map-image[data-map="esperanca"] {
+    background-image: url('../images/maps/esperanca.png');
+}
+
+.map-image[data-map="new-queen-street"] {
+    background-image: url('../images/maps/new-queen-street.png');
+}
+
+.map-image[data-map="runasapi"] {
+    background-image: url('../images/maps/runasapi.png');
+}
+
+/* FLASHPOINT */
+.map-image[data-map="aatlis"] {
+    background-image: url('../images/maps/aatlis.png');
+}
+.map-image[data-map="new-junk-city"] {
+    background-image: url('../images/maps/new-junk-city.png');
+}
+.map-image[data-map="suravasa"] {
+    background-image: url('../images/maps/suravasa.png');
+}
+
+/* CLASH */
+.map-image[data-map="hanaoka"] {
+    background-image: url('../images/maps/hanaoka.png');
+}
+.map-image[data-map="throne-of-anubis"] {
+    background-image: url('../images/maps/throne-of-anubis.png');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Hero-specific backgrounds */
+
+/* TANKS */
+
+.hero-image[data-hero="doomfist"] {
+    background-image: url('../images/heroes/doomfist.png');
+}
+
+.hero-image[data-hero="dva"] {
+    background-image: url('../images/heroes/dva.png');
+}
+
+.hero-image[data-hero="hazard"] {
+    background-image: url('../images/heroes/hazard.png');
+}
+
+.hero-image[data-hero="junker-queen"] {
+    background-image: url('../images/heroes/junker-queen.png');
+}
+
+.hero-image[data-hero="mauga"] {
+    background-image: url('../images/heroes/mauga.png');
+}
+
+.hero-image[data-hero="orisa"] {
+    background-image: url('../images/heroes/orisa.png');
+}
+
+.hero-image[data-hero="ramattra"] {
+    background-image: url('../images/heroes/ramattra.png');
+}
+
+.hero-image[data-hero="reinhardt"] {
+    background-image: url('../images/heroes/reinhardt.png');
+}
+
+.hero-image[data-hero="roadhog"] {
+    background-image: url('../images/heroes/roadhog.png');
+}
+
+.hero-image[data-hero="sigma"] {
+    background-image: url('../images/heroes/sigma.png');
+}
+
+.hero-image[data-hero="winston"] {
+    background-image: url('../images/heroes/winston.png');
+}
+
+.hero-image[data-hero="wrecking-ball"] {
+    background-image: url('../images/heroes/wrecking-ball.png');
+}
+
+.hero-image[data-hero="zarya"] {
+    background-image: url('../images/heroes/zarya.png');
+}
+
+/* DPS */
+
+.hero-image[data-hero="ashe"] {
+    background-image: url('../images/heroes/ashe.png');
+}
+
+.hero-image[data-hero="bastion"] {
+    background-image: url('../images/heroes/bastion.png');
+}
+
+.hero-image[data-hero="cassidy"] {
+    background-image: url('../images/heroes/cassidy.png');
+}
+
+.hero-image[data-hero="echo"] {
+    background-image: url('../images/heroes/echo.png');
+}
+
+.hero-image[data-hero="freja"] {
+    background-image: url('../images/heroes/freja.png');
+}
+
+.hero-image[data-hero="genji"] {
+    background-image: url('../images/heroes/genji.png');
+}
+
+.hero-image[data-hero="hanzo"] {
+    background-image: url('../images/heroes/hanzo.png');
+}
+
+.hero-image[data-hero="junkrat"] {
+    background-image: url('../images/heroes/junkrat.png');
+}
+
+.hero-image[data-hero="mei"] {
+    background-image: url('../images/heroes/mei.png');
+}
+
+.hero-image[data-hero="pharah"] {
+    background-image: url('../images/heroes/pharah.png');
+}
+
+.hero-image[data-hero="reaper"] {
+    background-image: url('../images/heroes/reaper.png');
+}
+
+.hero-image[data-hero="sojourn"] {
+    background-image: url('../images/heroes/sojourn.png');
+}
+
+.hero-image[data-hero="soldier76"] {
+    background-image: url('../images/heroes/soldier76.png');
+}
+
+.hero-image[data-hero="sombra"] {
+    background-image: url('../images/heroes/sombra.png');
+}
+
+.hero-image[data-hero="symmetra"] {
+    background-image: url('../images/heroes/symmetra.png');
+}
+
+.hero-image[data-hero="torbjorn"] {
+    background-image: url('../images/heroes/torbjorn.png');
+}
+
+.hero-image[data-hero="tracer"] {
+    background-image: url('../images/heroes/tracer.png');
+}
+
+.hero-image[data-hero="venture"] {
+    background-image: url('../images/heroes/venture.png');
+}
+
+.hero-image[data-hero="widowmaker"] {
+    background-image: url('../images/heroes/widowmaker.png');
+}
+
+/* SUPPORTS */
+
+.hero-image[data-hero="ana"] {
+    background-image: url('../images/heroes/ana.png');
+}
+
+.hero-image[data-hero="baptiste"] {
+    background-image: url('../images/heroes/baptiste.png');
+}
+
+.hero-image[data-hero="brigitte"] {
+    background-image: url('../images/heroes/brigitte.png');
+}
+
+.hero-image[data-hero="illari"] {
+    background-image: url('../images/heroes/illari.png');
+}
+
+.hero-image[data-hero="juno"] {
+    background-image: url('../images/heroes/juno.png');
+}
+
+.hero-image[data-hero="kiriko"] {
+    background-image: url('../images/heroes/kiriko.png');
+}
+
+.hero-image[data-hero="lifeweaver"] {
+    background-image: url('../images/heroes/lifeweaver.png');
+}
+
+.hero-image[data-hero="lucio"] {
+    background-image: url('../images/heroes/lucio.png');
+}
+
+.hero-image[data-hero="mercy"] {
+    background-image: url('../images/heroes/mercy.png');
+}
+
+.hero-image[data-hero="moira"] {
+    background-image: url('../images/heroes/moira.png');
+}
+
+.hero-image[data-hero="wuyang"] {
+    background-image: url('../images/heroes/wuyang.png');
+}
+
+.hero-image[data-hero="zenyatta"] {
+    background-image: url('../images/heroes/zenyatta.png');
+}

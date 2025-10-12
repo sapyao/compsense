@@ -155,7 +155,15 @@
     font-weight: bold;
     font-size: 1.1rem;
     color: #d0d0d0;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
 }
+
+.map-image .image-label {
+    display: none;
+}
+
 
 .map-name {
     display: block;
@@ -231,7 +239,9 @@
 .hero-ban-option:hover {
     transform: translateY(-3px);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    border-color: #ff8900;
 }
+
 
 .hero-ban-option.selected {
     border-color: #ff4a00;
@@ -255,6 +265,13 @@
     justify-content: center;
     background-color: #16171f;
     color: #d0d0d0;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.hero-image .image-label {
+    display: none; /* This hides the hovering labels */
 }
 
 .hero-name {
