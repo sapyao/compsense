@@ -8,20 +8,11 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/overwatch.css">
     <link rel="stylesheet" href="css/image-styles.css">
+    <link rel="stylesheet" href="css/quickplay-option.css">
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
 </head>
 <body>
-    <div id="welcome-screen" class="welcome-overlay">
-        <div class="welcome-content">
-            <div class="welcome-logo">
-                <img src="images/overwatch-logo.svg" alt="Overwatch 2 Logo" class="ow-logo">
-                <h1>CompSense</h1>
-            </div>
-            <h2>Welcome to Overwatch 2 CompSense</h2>
-            <p>Find the perfect team composition for every map and situation</p>
-            <button id="start-playing-btn" class="start-button">START PLAYING</button>
-        </div>
-    </div>
+
     
     <div id="map-selection" class="overlay-screen" style="display: none;">
         <div class="selection-header">
@@ -200,6 +191,9 @@
         <div class="ban-info">
             <p>Select up to 4 banned heroes for this match</p>
             <span class="ban-count">0/4 selected</span>
+        </div>
+        <div class="quickplay-option">
+            <button class="no-bans-btn">No Hero Bans (Quickplay)</button>
         </div>
         <div class="hero-ban-grid">
             <div class="role-category">

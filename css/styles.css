@@ -28,7 +28,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 90;
-    border-bottom: 2px solid #ff8900;
+    border-bottom: 2px solid #f99e1a;
 }
 
 nav {
@@ -41,7 +41,7 @@ nav {
 }
 
 .logo h1 {
-    color: #ff8900;
+    color: #f99e1a;
     font-size: 1.8rem;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -67,7 +67,7 @@ nav {
 }
 
 .nav-links a:hover, .nav-links a.active {
-    color: #ff8900;
+    color: #f99e1a;
     text-decoration: none;
     background-color: rgba(255, 137, 0, 0.1);
 }
@@ -92,7 +92,7 @@ section {
 .hero {
     text-align: center;
     padding: 6rem 2rem;
-    background: linear-gradient(135deg, #ff8900, #ff4a00);
+    background: linear-gradient(135deg, #f99e1a, #ff4a00);
     color: white;
     border-radius: 8px;
     position: relative;
@@ -175,7 +175,7 @@ section {
 }
 
 .feature-card h3 {
-    color: #ff8900;
+    color: #f99e1a;
     margin-bottom: 1rem;
     font-size: 1.4rem;
 }
@@ -191,7 +191,7 @@ section {
 
 .quick-access h2 {
     margin-bottom: 2rem;
-    color: #ff8900;
+    color: #f99e1a;
 }
 
 .quick-buttons {
@@ -214,9 +214,9 @@ section {
 }
 
 .quick-button:hover {
-    background-color: #ff8900;
+    background-color: #f99e1a;
     color: #1a1c26;
-    border-color: #ff8900;
+    border-color: #f99e1a;
 }
 
 /* Footer */
@@ -253,6 +253,6 @@ footer p {
 .social-links a:hover {
     opacity: 1;
     text-decoration: none;
-    background-color: #ff8900;
+    background-color: #f99e1a;
     color: #16171f;
 }

@@ -114,7 +114,6 @@
     background-image: url('../images/maps/paraiso.png');
 }
 
-
 /* PUSH */
 .map-image[data-map="colosseo"] {
     background-image: url('../images/maps/colosseo.png');
@@ -151,51 +150,9 @@
     background-image: url('../images/maps/throne-of-anubis.png');
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* Hero-specific backgrounds */
 
 /* TANKS */
-
 .hero-image[data-hero="doomfist"] {
     background-image: url('../images/heroes/doomfist.png');
 }
@@ -249,7 +206,6 @@
 }
 
 /* DPS */
-
 .hero-image[data-hero="ashe"] {
     background-image: url('../images/heroes/ashe.png');
 }
@@ -327,7 +283,6 @@
 }
 
 /* SUPPORTS */
-
 .hero-image[data-hero="ana"] {
     background-image: url('../images/heroes/ana.png');
 }

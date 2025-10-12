@@ -1,22 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
     // References to screens
-    const welcomeScreen = document.getElementById('welcome-screen');
+    // Welcome screen removed
     const mapScreen = document.getElementById('map-selection');
     const heroBanScreen = document.getElementById('hero-ban');
     const compResultsScreen = document.getElementById('composition-results');
     const mainContent = document.querySelector('main');
     const header = document.querySelector('header');
     const footer = document.querySelector('footer');
+    
+    // Show main interface by default
+    showMainInterface();
 
     // Get buttons
-    const startButtons = [
-        document.getElementById('start-playing-btn'),
-        document.getElementById('main-start-btn')
-    ];
+    const mainStartBtn = document.getElementById('main-start-btn');
     const closeButtons = document.querySelectorAll('.close-button');
     const resetBansButton = document.querySelector('.reset-bans-btn');
     const confirmBansButton = document.querySelector('.confirm-bans-btn');
     const newSearchButton = document.querySelector('.new-search-btn');
+    const noBansButton = document.querySelector('.no-bans-btn');
     const quickButtons = {
         maps: document.getElementById('maps-btn'),
         heroes: document.getElementById('heroes-btn'),
@@ -88,7 +89,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Screen navigation functions
     function showMainInterface() {
-        welcomeScreen.style.display = 'none';
+        // Welcome screen removed
         mainContent.style.display = 'block';
         header.style.display = 'block';
         footer.style.display = 'block';
@@ -122,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function hideAllScreens() {
-        welcomeScreen.style.display = 'none';
+        // Welcome screen removed
         mapScreen.style.display = 'none';
         heroBanScreen.style.display = 'none';
         compResultsScreen.style.display = 'none';
@@ -224,11 +225,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Event listeners
-    startButtons.forEach(btn => {
-        if (btn) {
-            btn.addEventListener('click', showMapSelection);
-        }
-    });
+    if (mainStartBtn) {
+        mainStartBtn.addEventListener('click', showMapSelection);
+    }
+    
+    // Start with main interface shown
+    showMainInterface();
 
     closeButtons.forEach(btn => {
         btn.addEventListener('click', backToMain);
@@ -254,6 +256,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Button actions
+    if (mainStartBtn) {
+        mainStartBtn.addEventListener('click', showMapSelection);
+    }
+    
     if (resetBansButton) {
         resetBansButton.addEventListener('click', resetBans);
     }
@@ -264,6 +270,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (newSearchButton) {
         newSearchButton.addEventListener('click', showMapSelection);
+    }
+    
+    if (noBansButton) {
+        noBansButton.addEventListener('click', function() {
+            // Clear any selected bans
+            resetBans();
+            // Move directly to composition results
+            showCompResults();
+        });
     }
 
     // Quick access buttons
