@@ -32,20 +32,59 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Map data structure (name, type, strength for different comps)
     const mapData = {
+        // Control Maps
+        'antarctic-peninsula': { name: 'Antarctic Peninsula', type: 'Control', strengths: { dive: 80, brawl: 70, poke: 65 }},
+        'busan': { name: 'Busan', type: 'Control', strengths: { dive: 85, brawl: 70, poke: 60 }},
+        'ilios': { name: 'Ilios', type: 'Control', strengths: { dive: 90, brawl: 65, poke: 70 }},
         'lijiang': { name: 'Lijiang Tower', type: 'Control', strengths: { dive: 85, brawl: 75, poke: 60 }},
-        'kings-row': { name: 'King\'s Row', type: 'Hybrid', strengths: { dive: 70, brawl: 90, poke: 65 }},
+        'nepal': { name: 'Nepal', type: 'Control', strengths: { dive: 80, brawl: 75, poke: 65 }},
+        'oasis': { name: 'Oasis', type: 'Control', strengths: { dive: 85, brawl: 70, poke: 65 }},
+        'samoa': { name: 'Samoa', type: 'Control', strengths: { dive: 75, brawl: 80, poke: 60 }},
+        
+        // Escort Maps
+        'circuit-royal': { name: 'Circuit Royal', type: 'Escort', strengths: { dive: 60, brawl: 70, poke: 85 }},
         'dorado': { name: 'Dorado', type: 'Escort', strengths: { dive: 75, brawl: 65, poke: 80 }},
-        // Add data for all maps
-    };
+        'havana': { name: 'Havana', type: 'Escort', strengths: { dive: 70, brawl: 75, poke: 75 }},
+        'junkertown': { name: 'Junkertown', type: 'Escort', strengths: { dive: 55, brawl: 65, poke: 90 }},
+        'rialto': { name: 'Rialto', type: 'Escort', strengths: { dive: 70, brawl: 80, poke: 70 }},
+        'route66': { name: 'Route 66', type: 'Escort', strengths: { dive: 65, brawl: 70, poke: 85 }},
+        'shambali': { name: 'Shambali Monastery', type: 'Escort', strengths: { dive: 75, brawl: 75, poke: 70 }},
+        'gibraltar': { name: 'Watchpoint: Gibraltar', type: 'Escort', strengths: { dive: 70, brawl: 65, poke: 80 }},
+        
+        // Hybrid Maps
+        'blizzard-world': { name: 'Blizzard World', type: 'Hybrid', strengths: { dive: 70, brawl: 80, poke: 70 }},
+        'eichenwalde': { name: 'Eichenwalde', type: 'Hybrid', strengths: { dive: 65, brawl: 85, poke: 70 }},
+        'hollywood': { name: 'Hollywood', type: 'Hybrid', strengths: { dive: 75, brawl: 80, poke: 65 }},
+        'kings-row': { name: 'King\'s Row', type: 'Hybrid', strengths: { dive: 70, brawl: 90, poke: 65 }},
+        'midtown': { name: 'Midtown', type: 'Hybrid', strengths: { dive: 75, brawl: 75, poke: 75 }},
+        'numbani': { name: 'Numbani', type: 'Hybrid', strengths: { dive: 80, brawl: 70, poke: 70 }},
+        'paraiso': { name: 'Paraíso', type: 'Hybrid', strengths: { dive: 85, brawl: 70, poke: 65 }},
+        
+        // Push Maps
+        'colosseo': { name: 'Colosseo', type: 'Push', strengths: { dive: 80, brawl: 85, poke: 60 }},
+        'esperanca': { name: 'Esperança', type: 'Push', strengths: { dive: 75, brawl: 80, poke: 65 }},
+        'new-queen-street': { name: 'New Queen Street', type: 'Push', strengths: { dive: 85, brawl: 75, poke: 60 }},
+        'runasapi': { name: 'Runasapi', type: 'Push', strengths: { dive: 80, brawl: 80, poke: 65 }},
+        
+        // Flashpoint Maps
+        'aatlis': { name: 'Aatlis', type: 'Flashpoint', strengths: { dive: 85, brawl: 75, poke: 60 }},
+        'new-junk-city': { name: 'New Junk City', type: 'Flashpoint', strengths: { dive: 80, brawl: 80, poke: 65 }},
+        'suravasa': { name: 'Suravasa', type: 'Flashpoint', strengths: { dive: 85, brawl: 70, poke: 65 }},
+        
+        // Clash Maps
+        'hanaoka': { name: 'Hanaoka', type: 'Clash', strengths: { dive: 75, brawl: 85, poke: 60 }},
+        'throne-of-anubis': { name: 'Throne of Anubis', type: 'Clash', strengths: { dive: 70, brawl: 85, poke: 65 }}
+};
 
     // Hero composition data
+    // according to Cakariey
     const compositionData = {
         dive: {
             name: 'Dive Composition',
             heroes: {
-                tank: ['Winston', 'D.Va', 'Wrecking Ball'],
-                damage: ['Tracer', 'Genji', 'Echo', 'Sombra'],
-                support: ['Mercy', 'Lucio', 'Ana', 'Zenyatta']
+                tank: ['Winston', 'D.Va', 'Wrecking Ball', 'Doomfist', 'Hazard', 'Orisa'],
+                damage: ['Tracer', 'Genji', 'Sombra', 'Venture'],
+                support: ['Lucio', 'Ana', 'Zenyatta', 'Kiriko', 'Moira']
             },
             strategy: 'Highly mobile composition focused on diving backline targets and securing eliminations through coordinated attacks.',
             tips: [
@@ -58,9 +97,9 @@ document.addEventListener('DOMContentLoaded', function() {
         brawl: {
             name: 'Brawl Composition',
             heroes: {
-                tank: ['Reinhardt', 'Zarya', 'Junker Queen'],
-                damage: ['Reaper', 'Mei', 'Cassidy', 'Symmetra'],
-                support: ['Lucio', 'Moira', 'Brigitte', 'Baptiste']
+                tank: ['Reinhardt', 'Zarya', 'Junker Queen', 'Mauga', 'Orisa', 'Ramattra'],
+                damage: ['Reaper', 'Mei', 'Cassidy', 'Symmetra', 'Bastion', 'Venture'],
+                support: ['Lucio', 'Moira', 'Brigitte', 'Ana', 'Lifeweaver', 'Wuyang']
             },
             strategy: 'Close-range fighting composition that excels at controlling space and winning direct team fights through sustain and area damage.',
             tips: [
@@ -73,9 +112,9 @@ document.addEventListener('DOMContentLoaded', function() {
         poke: {
             name: 'Poke Composition',
             heroes: {
-                tank: ['Sigma', 'Orisa', 'Roadhog'],
-                damage: ['Soldier: 76', 'Widowmaker', 'Hanzo', 'Ashe', 'Junkrat'],
-                support: ['Ana', 'Baptiste', 'Zenyatta', 'Mercy']
+                tank: ['Sigma', 'Orisa', 'Roadhog', 'Ramattra'],
+                damage: ['Soldier: 76', 'Widowmaker', 'Hanzo', 'Ashe', 'Junkrat', 'Sojourn', 'Echo', 'Pharah', 'Freja', 'Torbjorn', 'Venture'],
+                support: ['Ana', 'Baptiste', 'Zenyatta', 'Mercy', 'Illari', 'Juno', 'Wuyang']
             },
             strategy: 'Long-range composition that focuses on dealing damage from a distance while maintaining safe positioning.',
             tips: [
@@ -187,35 +226,66 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function populateCompResults() {
-        // Display selected map and type
-        document.getElementById('selected-map').textContent = mapData[selectedMap]?.name || selectedMap;
-        document.getElementById('map-type').textContent = mapData[selectedMap]?.type || selectedMapType;
-        
-        // Display banned heroes
-        const bannedHeroesList = document.getElementById('banned-heroes-list');
-        bannedHeroesList.innerHTML = '';
-        
-        if (bannedHeroes.length > 0) {
-            bannedHeroes.forEach(hero => {
-                const heroSpan = document.createElement('div');
-                heroSpan.classList.add('banned-hero');
-                heroSpan.textContent = hero;
-                bannedHeroesList.appendChild(heroSpan);
-            });
-        } else {
-            const noHeroesSpan = document.createElement('div');
-            noHeroesSpan.classList.add('banned-hero');
-            noHeroesSpan.textContent = 'No banned heroes';
-            bannedHeroesList.appendChild(noHeroesSpan);
-        }
-        
-        // Determine best compositions based on map and bans
-        // This would be much more complex in a real application
-        // For now we'll just use the pre-defined sample data
-        
-        // Primary recommendation would typically be calculated based on map strengths and banned heroes
-        // This is a simplified example
+    // Display selected map and type
+    const mapInfo = mapData[selectedMap];
+    document.getElementById('selected-map').textContent = mapInfo?.name || selectedMap;
+    document.getElementById('map-type').textContent = mapInfo?.type || selectedMapType;
+    
+    // Display banned heroes
+    const bannedHeroesList = document.getElementById('banned-heroes-list');
+    bannedHeroesList.innerHTML = '';
+    
+    if (bannedHeroes.length > 0) {
+        bannedHeroes.forEach(hero => {
+            const heroSpan = document.createElement('div');
+            heroSpan.classList.add('banned-hero');
+            heroSpan.textContent = hero;
+            bannedHeroesList.appendChild(heroSpan);
+        });
+    } else {
+        const noHeroesSpan = document.createElement('div');
+        noHeroesSpan.classList.add('banned-hero');
+        noHeroesSpan.textContent = 'No banned heroes';
+        bannedHeroesList.appendChild(noHeroesSpan);
     }
+    
+    // Determine best compositions based on map effectiveness
+    const mapStrengths = mapInfo.strengths
+    
+    // Sort compositions by effectiveness on this map
+    const sortedComps = Object.entries(compositionData)
+        .map(([key, comp]) => ({
+            key,
+            comp,
+            effectiveness: mapStrengths[key] || 50
+        }))
+        .sort((a, b) => b.effectiveness - a.effectiveness);
+    
+    // Filter out compositions with banned heroes
+    const availableComps = sortedComps.filter(({ comp }) => {
+        const allHeroes = [...comp.heroes.tank, ...comp.heroes.damage, ...comp.heroes.support];
+        return !bannedHeroes.some(banned => 
+            allHeroes.some(hero => hero.toLowerCase().includes(banned.toLowerCase()))
+        );
+    });
+    
+    // Display primary and alternative compositions
+    displayCompositionCard(availableComps[0], true);
+    if (availableComps.length > 1) {
+        displayCompositionCard(availableComps[1], false);
+    }
+}
+
+function displayCompositionCard(compData, isPrimary) {
+    if (!compData) return;
+    
+    const { comp, effectiveness } = compData;
+    const cardClass = isPrimary ? 'primary-comp' : 'alternative-comp';
+    const cardTitle = isPrimary ? 'Primary Recommendation' : 'Alternative Option';
+    
+    // This would update the existing card in the HTML
+    // You'd need to add logic to dynamically create cards or update existing ones
+}
 
     function resetState() {
         selectedMap = '';
