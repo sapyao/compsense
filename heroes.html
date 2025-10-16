@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CompSense - Overwatch 2 Hero Database">
+    <title>Overwatch 2 CompSense - Hero Database</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/overwatch.css">
+    <link rel="stylesheet" href="css/image-styles.css">
+    <link rel="stylesheet" href="css/quickplay-option.css">
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <style>
+        .hero-database-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .database-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .database-header h1 {
+            font-size: 3rem;
+            color: #ff8900;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(255, 137, 0, 0.3);
+        }
+        
+        .database-header p {
+            font-size: 1.2rem;
+            color: #d0d0d0;
+        }
+        
+        .filter-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-buttons {
+            display: inline-flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            padding: 0.8rem 2rem;
+            border: 2px solid #ff8900;
+            background: transparent;
+            color: #ff8900;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .filter-btn:hover {
+            background: rgba(255, 137, 0, 0.2);
+        }
+        
+        .filter-btn.active {
+            background: #ff8900;
+            color: #1a1c2e;
+        }
+        
+        .hero-count {
+            text-align: center;
+            margin: 1rem 0 2rem;
+            font-size: 1.1rem;
+            color: #d0d0d0;
+        }
+        
+        /* Reuse hero ban grid styles */
+        .hero-database-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .hero-option {
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .hero-option:hover {
+            transform: translateY(-5px);
+        }
+        
+        .hero-option:hover .hero-image {
+            border-color: #ffa640;
+        }
+        
+        .hero-info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 11, 15, 0.95);
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        
+        .hero-info-modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero-info-content {
+            background: #1a1c2e;
+            border: 2px solid #ff8900;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 100%;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .hero-info-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #3a3c50;
+        }
+        
+        .hero-info-portrait {
+            width: 150px;
+            height: 150px;
+            border-radius: 8px;
+            border: 3px solid #ff8900;
+            object-fit: cover;
+        }
+        
+        .hero-info-title h2 {
+            font-size: 2.5rem;
+            color: #ff8900;
+            margin-bottom: 0.5rem;
+        }
+        
+        .hero-role-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .hero-role-badge.tank {
+            background: rgba(63, 124, 255, 0.3);
+            border: 2px solid #3F7CFF;
+            color: #3F7CFF;
+        }
+        
+        .hero-role-badge.damage {
+            background: rgba(255, 118, 118, 0.3);
+            border: 2px solid #FF7676;
+            color: #FF7676;
+        }
+        
+        .hero-role-badge.support {
+            background: rgba(73, 214, 117, 0.3);
+            border: 2px solid #49D675;
+            color: #49D675;
+        }
+        
+        .hero-description {
+            color: #d0d0d0;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #ff8900;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+        
+        .close-modal:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>CompSense</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="heroes.html" class="active">Heroes</a></li>
+                <li><a href="compositions.html">Team Comps</a></li>
+                <li><a href="meta.html">Current Meta</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="hero-database-container">
+            <div class="database-header">
+                <h1>Hero Database</h1>
+                <p>Explore all Overwatch 2 heroes and their abilities</p>
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-role="all">All Heroes</button>
+                    <button class="filter-btn" data-role="tank">Tanks</button>
+                    <button class="filter-btn" data-role="damage">Damage</button>
+                    <button class="filter-btn" data-role="support">Support</button>
+                </div>
+            </div>
+            
+            <div class="hero-count">
+                <span id="hero-count-text">Showing all heroes</span>
+            </div>
+            
+            <div class="hero-database-grid">
+                <div class="role-category" data-role="tank">
+                    <h3>Tank</h3>
+                <div class="hero-ban-options tank-heroes">
+                    <div class="hero-ban-option" data-hero="doomfist">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Doomfist</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="dva">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">D.Va</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="hazard">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Hazard</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="junker-queen">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Junker Queen</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="mauga">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Mauga</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="orisa">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Orisa</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="ramattra">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Ramattra</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="reinhardt">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Reinhardt</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="roadhog">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Roadhog</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="sigma">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Sigma</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="winston">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Winston</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="wrecking-ball">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Wrecking Ball</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="zarya">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Zarya</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-category" data-role="damage">
+                <h3>Damage</h3>
+                <div class="hero-ban-options damage-heroes">
+                    <div class="hero-ban-option" data-hero="ashe">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Ashe</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="bastion">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Bastion</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="cassidy">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Cassidy</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="echo">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Echo</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="freja">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Freja</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="genji">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Genji</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="hanzo">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Hanzo</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="junkrat">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Junkrat</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="mei">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Mei</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="pharah">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Pharah</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="reaper">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Reaper</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="sojourn">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Sojourn</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="soldier76">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Soldier: 76</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="sombra">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Sombra</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="symmetra">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Symmetra</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="torbjorn">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Torbjörn</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="tracer">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Tracer</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="venture">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Venture</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="widowmaker">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Widowmaker</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="role-category" data-role="support">
+                <h3>Support</h3>
+                <div class="hero-ban-options support-heroes">
+                    <div class="hero-ban-option" data-hero="ana">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Ana</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="baptiste">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Baptiste</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="brigitte">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Brigitte</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="illari">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Illari</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="juno">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Juno</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="kiriko">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Kiriko</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="lifeweaver">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Lifeweaver</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="lucio">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Lúcio</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="mercy">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Mercy</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="moira">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Moira</span>
+                    </div>
+                     <div class="hero-ban-option" data-hero="wuyang">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Wuyang</span>
+                    </div>
+                    <div class="hero-ban-option" data-hero="zenyatta">
+                        <div class="hero-image placeholder-image"></div>
+                        <span class="hero-name">Zenyatta</span>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Hero Info Modal -->
+    <div class="hero-info-modal" id="hero-modal">
+        <div class="hero-info-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <div class="hero-info-header">
+                <img src="" alt="" class="hero-info-portrait" id="modal-hero-image">
+                <div class="hero-info-title">
+                    <h2 id="modal-hero-name">Hero Name</h2>
+                    <span class="hero-role-badge" id="modal-hero-role">Role</span>
+                </div>
+            </div>
+            <div class="hero-description">
+                <p id="modal-hero-description">Hero description will appear here.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 CompSense. All rights reserved. Not affiliated with Blizzard Entertainment.</p>
+        <div class="social-links">
+            <a href="#">Twitter</a>
+            <a href="#">Discord</a>
+            <a href="#">YouTube</a>
+            <a href="#">Reddit</a>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/image-loader.js"></script>
+    <script src="js/image-checker.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const roleCategories = document.querySelectorAll('.role-category');
+            const heroCountText = document.getElementById('hero-count-text');
+            const heroOptions = document.querySelectorAll('.hero-ban-option');
+            const heroModal = document.getElementById('hero-modal');
+            const closeModal = document.getElementById('close-modal');
+            
+            // Hero descriptions (you can expand these later)
+            const heroDescriptions = {
+                'doomfist': 'A highly mobile tank that excels at disrupting enemy formations with powerful melee attacks.',
+                'dva': 'A versatile tank with high mobility and the ability to negate enemy projectiles.',
+                'hazard': 'A resilient tank specializing in area denial and crowd control.',
+                'junker-queen': 'An aggressive tank that thrives in close-quarters combat with sustain through wounds.',
+                'mauga': 'A dual-wielding tank with incredible sustain and area damage.',
+                'orisa': 'A defensive anchor tank with fortification and area denial capabilities.',
+                'ramattra': 'A shapeshifting tank that can switch between ranged and melee forms.',
+                'reinhardt': 'The classic anchor tank with a large barrier shield for team protection.',
+                'roadhog': 'A tanky brawler with self-healing and pick potential through his hook.',
+                'sigma': 'A scientific tank who manipulates gravity to control space and protect allies.',
+                'winston': 'A mobile dive tank perfect for engaging backline targets.',
+                'wrecking-ball': 'An extremely mobile tank that creates chaos with knockback and shields.',
+                'zarya': 'A tank that grows stronger by absorbing damage with her barriers.',
+                'ashe': 'A sharpshooter with dynamite and a powerful ultimate robot companion.',
+                'bastion': 'A transforming robot with devastating damage in turret configuration.',
+                'cassidy': 'A gunslinger with flashbang and high burst damage potential.',
+                'echo': 'A flying damage hero who can duplicate enemy heroes.',
+                'freja': 'A versatile damage dealer with unique crowd control abilities.',
+                'genji': 'A highly mobile ninja with deflection and devastating ultimate.',
+                'hanzo': 'A sniper with one-shot potential and area denial abilities.',
+                'junkrat': 'An explosive expert excellent at area denial and shield break.',
+                'mei': 'A crowd control specialist who can freeze enemies and create walls.',
+                'pharah': 'An aerial bombardier dealing splash damage from above.',
+                'reaper': 'A close-range assassin with high damage and self-sustain.',
+                'sojourn': 'A mobile soldier with a railgun charged by dealing damage.',
+                'soldier76': 'A versatile soldier with sprint, healing, and consistent damage.',
+                'sombra': 'A stealth hacker who disables enemy abilities and hacks health packs.',
+                'symmetra': 'A builder who creates teleporters and deadly turrets.',
+                'torbjorn': 'An engineer who deploys turrets and provides armor.',
+                'tracer': 'The fastest hero in the game with blinks and recall.',
+                'venture': 'A mobile damage hero specializing in underground mobility.',
+                'widowmaker': 'A lethal sniper with grappling hook and one-shot potential.',
+                'ana': 'A sniper support with powerful healing and anti-heal capabilities.',
+                'baptiste': 'A combat medic with burst healing and immortality field.',
+                'brigitte': 'A support-tank hybrid who heals through dealing damage.',
+                'illari': 'A solar-powered support with both healing and damage capabilities.',
+                'juno': 'A versatile support hero with mobility and area healing.',
+                'kiriko': 'A ninja support with teleportation and invulnerability.',
+                'lifeweaver': 'A nature-based support with life grip and healing blossoms.',
+                'lucio': 'A mobile support providing speed boost and area healing.',
+                'mercy': 'A guardian angel who damage boosts and resurrects allies.',
+                'moira': 'A biotic support with both healing and damaging abilities.',
+                'wuyang': 'A mystical support hero with unique healing mechanics.',
+                'zenyatta': 'A transcendent support who applies discord and harmony orbs.'
+            };
+            
+            // Filter functionality
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const role = this.getAttribute('data-role');
+                    
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter categories
+                    if (role === 'all') {
+                        roleCategories.forEach(cat => cat.style.display = 'block');
+                        updateHeroCount();
+                    } else {
+                        roleCategories.forEach(cat => {
+                            if (cat.getAttribute('data-role') === role) {
+                                cat.style.display = 'block';
+                            } else {
+                                cat.style.display = 'none';
+                            }
+                        });
+                        updateHeroCount(role);
+                    }
+                });
+            });
+            
+            // Update hero count
+            function updateHeroCount(role = 'all') {
+                if (role === 'all') {
+                    const totalHeroes = heroOptions.length;
+                    heroCountText.textContent = `Showing all ${totalHeroes} heroes`;
+                } else {
+                    // Count heroes in the visible category
+                    const visibleCategory = document.querySelector(`.role-category[data-role="${role}"]`);
+                    if (visibleCategory) {
+                        const heroesInCategory = visibleCategory.querySelectorAll('.hero-ban-option');
+                        const roleName = role.charAt(0).toUpperCase() + role.slice(1);
+                        heroCountText.textContent = `Showing ${heroesInCategory.length} ${roleName} heroes`;
+                    }
+                }
+            }
+            
+            // Hero click to show modal
+            heroOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const heroName = this.querySelector('.hero-name').textContent;
+                    const heroSlug = this.getAttribute('data-hero');
+                    // Find the role from the parent role-category
+                    const roleCategory = this.closest('.role-category');
+                    const heroRole = roleCategory ? roleCategory.getAttribute('data-role') : 'unknown';
+                    const heroImage = this.querySelector('.hero-image');
+                    
+                    // Update modal content
+                    document.getElementById('modal-hero-name').textContent = heroName;
+                    document.getElementById('modal-hero-role').textContent = heroRole;
+                    document.getElementById('modal-hero-role').className = `hero-role-badge ${heroRole}`;
+                    document.getElementById('modal-hero-description').textContent = heroDescriptions[heroSlug] || 'Description coming soon.';
+                    
+                    // Set hero image
+                    const modalImage = document.getElementById('modal-hero-image');
+                    modalImage.src = `images/heroes/${heroSlug}.png`;
+                    modalImage.alt = heroName;
+                    modalImage.onerror = function() {
+                        this.style.display = 'none';
+                    };
+                    
+                    // Show modal
+                    heroModal.classList.add('active');
+                });
+            });
+            
+            // Close modal
+            closeModal.addEventListener('click', function() {
+                heroModal.classList.remove('active');
+            });
+            
+            // Close modal on background click
+            heroModal.addEventListener('click', function(e) {
+                if (e.target === heroModal) {
+                    heroModal.classList.remove('active');
+                }
+            });
+            
+            // Initialize count
+            updateHeroCount();
+        });
+    </script>
+</body>
+</html>
