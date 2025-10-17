@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CompSense - Overwatch 2 Map Database">
+    <title>Overwatch 2 CompSense - Map Database</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/overwatch.css">
+    <link rel="stylesheet" href="css/image-styles.css">
+    <link rel="stylesheet" href="css/quickplay-option.css">
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <style>
+        .map-database-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .database-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .database-header h1 {
+            font-size: 3rem;
+            color: #218ffe;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 10px rgba(0, 174, 255, 0.3);
+        }
+        
+        .database-header p {
+            font-size: 1.2rem;
+            color: #d0d0d0;
+        }
+        
+        .filter-section {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-buttons {
+            display: inline-flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .filter-btn {
+            padding: 0.8rem 2rem;
+            border: 2px solid #218ffe;
+            background: transparent;
+            color: #218ffe;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-radius: 4px;
+        }
+        
+        .filter-btn:hover {
+            background: rgba(0, 174, 255, 0.2);
+        }
+        
+        .filter-btn.active {
+            background: #218ffe;
+            color: #1a1c2e;
+        }
+        
+        .map-count {
+            text-align: center;
+            margin: 1rem 0 2rem;
+            font-size: 1.1rem;
+            color: #d0d0d0;
+        }
+        
+        .map-database-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .map-info-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 11, 15, 0.95);
+            z-index: 2000;
+            display: none;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        
+        .map-info-modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .map-info-content {
+            background: #1a1c2e;
+            border: 2px solid #218ffe;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 100%;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .map-info-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #3a3c50;
+        }
+        
+        .map-info-image {
+            width: 300px;
+            height: 180px;
+            border-radius: 8px;
+            border: 3px solid #218ffe;
+            object-fit: cover;
+        }
+        
+        .map-info-title h2 {
+            font-size: 2.5rem;
+            color: #218ffe;
+            margin-bottom: 0.5rem;
+        }
+        
+        .map-type-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: rgba(0, 174, 255, 0.3);
+            border: 2px solid #218ffe;
+            color: #218ffe;
+        }
+        
+        .map-description {
+            color: #d0d0d0;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: #218ffe;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s ease;
+        }
+        
+        .close-modal:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>CompSense</h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="heroes.html">Heroes</a></li>
+                <li><a href="maps.html" class="active">Maps</a></li>
+                <li><a href="compositions.html">Team Comps</a></li>
+                <li><a href="meta.html">Current Meta</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="map-database-container">
+            <div class="database-header">
+                <h1>Map Database</h1>
+                <p>Explore all Overwatch 2 maps and their details</p>
+            </div>
+            
+            <div class="filter-section">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-type="all">All Maps</button>
+                    <button class="filter-btn" data-type="control">Control</button>
+                    <button class="filter-btn" data-type="escort">Escort</button>
+                    <button class="filter-btn" data-type="hybrid">Hybrid</button>
+                    <button class="filter-btn" data-type="push">Push</button>
+                    <button class="filter-btn" data-type="flashpoint">Flashpoint</button>
+                    <button class="filter-btn" data-type="clash">Clash</button>
+                </div>
+            </div>
+            
+            <div class="map-count">
+                <span id="map-count-text">Showing all maps</span>
+            </div>
+            
+            <div class="map-database-grid">
+                <div class="map-category" data-type="control">
+                    <h3>Control</h3>
+                    <div class="map-options">
+                        <div class="map-option" data-map="antarctic-peninsula">
+                            <div class="map-image"></div>
+                            <span class="map-name">Antarctic Peninsula</span>
+                        </div>
+                        <div class="map-option" data-map="busan">
+                            <div class="map-image"></div>
+                            <span class="map-name">Busan</span>
+                        </div>
+                        <div class="map-option" data-map="ilios">
+                            <div class="map-image"></div>
+                            <span class="map-name">Ilios</span>
+                        </div>
+                        <div class="map-option" data-map="lijiang">
+                            <div class="map-image"></div>
+                            <span class="map-name">Lijiang Tower</span>
+                        </div>
+                        <div class="map-option" data-map="nepal">
+                            <div class="map-image"></div>
+                            <span class="map-name">Nepal</span>
+                        </div>
+                        <div class="map-option" data-map="oasis">
+                            <div class="map-image"></div>
+                            <span class="map-name">Oasis</span>
+                        </div>
+                        <div class="map-option" data-map="samoa">
+                            <div class="map-image"></div>
+                            <span class="map-name">Samoa</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-category" data-type="escort">
+                    <h3>Escort</h3>
+                    <div class="map-options">
+                        <div class="map-option" data-map="circuit-royal">
+                            <div class="map-image"></div>
+                            <span class="map-name">Circuit Royal</span>
+                        </div>
+                        <div class="map-option" data-map="dorado">
+                            <div class="map-image"></div>
+                            <span class="map-name">Dorado</span>
+                        </div>
+                        <div class="map-option" data-map="havana">
+                            <div class="map-image"></div>
+                            <span class="map-name">Havana</span>
+                        </div>
+                        <div class="map-option" data-map="junkertown">
+                            <div class="map-image"></div>
+                            <span class="map-name">Junkertown</span>
+                        </div>
+                        <div class="map-option" data-map="rialto">
+                            <div class="map-image"></div>
+                            <span class="map-name">Rialto</span>
+                        </div>
+                        <div class="map-option" data-map="route66">
+                            <div class="map-image"></div>
+                            <span class="map-name">Route 66</span>
+                        </div>
+                        <div class="map-option" data-map="shambali">
+                            <div class="map-image"></div>
+                            <span class="map-name">Shambali Monastery</span>
+                        </div>
+                        <div class="map-option" data-map="gibraltar">
+                            <div class="map-image"></div>
+                            <span class="map-name">Watchpoint: Gibraltar</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-category" data-type="hybrid">
+                    <h3>Hybrid</h3>
+                    <div class="map-options">
+                        <div class="map-option" data-map="blizzard-world">
+                            <div class="map-image"></div>
+                            <span class="map-name">Blizzard World</span>
+                        </div>
+                        <div class="map-option" data-map="eichenwalde">
+                            <div class="map-image"></div>
+                            <span class="map-name">Eichenwalde</span>
+                        </div>
+                        <div class="map-option" data-map="hollywood">
+                            <div class="map-image"></div>
+                            <span class="map-name">Hollywood</span>
+                        </div>
+                        <div class="map-option" data-map="kings-row">
+                            <div class="map-image"></div>
+                            <span class="map-name">King's Row</span>
+                        </div>
+                        <div class="map-option" data-map="midtown">
+                            <div class="map-image"></div>
+                            <span class="map-name">Midtown</span>
+                        </div>
+                        <div class="map-option" data-map="numbani">
+                            <div class="map-image"></div>
+                            <span class="map-name">Numbani</span>
+                        </div>
+                        <div class="map-option" data-map="paraiso">
+                            <div class="map-image"></div>
+                            <span class="map-name">Paraíso</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-category" data-type="push">
+                    <h3>Push</h3>
+                    <div class="map-options">
+                        <div class="map-option" data-map="colosseo">
+                            <div class="map-image"></div>
+                            <span class="map-name">Colosseo</span>
+                        </div>
+                        <div class="map-option" data-map="esperanca">
+                            <div class="map-image"></div>
+                            <span class="map-name">Esperança</span>
+                        </div>
+                        <div class="map-option" data-map="new-queen-street">
+                            <div class="map-image"></div>
+                            <span class="map-name">New Queen Street</span>
+                        </div>
+                        <div class="map-option" data-map="runasapi">
+                            <div class="map-image"></div>
+                            <span class="map-name">Runasapi</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-category" data-type="flashpoint">
+                    <h3>Flashpoint</h3>
+                    <div class="map-options">
+                        <div class="map-option" data-map="aatlis">
+                            <div class="map-image"></div>
+                            <span class="map-name">Aatlis</span>
+                        </div>
+                        <div class="map-option" data-map="new-junk-city">
+                            <div class="map-image"></div>
+                            <span class="map-name">New Junk City</span>
+                        </div>
+                        <div class="map-option" data-map="suravasa">
+                            <div class="map-image"></div>
+                            <span class="map-name">Suravasa</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="map-category" data-type="clash">
+                    <h3>Clash</h3>
+                    <div class="map-options">
+                        <div class="map-option" data-map="hanaoka">
+                            <div class="map-image"></div>
+                            <span class="map-name">Hanaoka</span>
+                        </div>
+                        <div class="map-option" data-map="throne-of-anubis">
+                            <div class="map-image"></div>
+                            <span class="map-name">Throne Of Anubis</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Map Info Modal -->
+    <div class="map-info-modal" id="map-modal">
+        <div class="map-info-content">
+            <button class="close-modal" id="close-modal">&times;</button>
+            <div class="map-info-header">
+                <img src="" alt="" class="map-info-image" id="modal-map-image">
+                <div class="map-info-title">
+                    <h2 id="modal-map-name">Map Name</h2>
+                    <span class="map-type-badge" id="modal-map-type">Map Type</span>
+                </div>
+            </div>
+            <div class="map-description">
+                <p id="modal-map-description">Map description will appear here.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 CompSense. All rights reserved. Not affiliated with Blizzard Entertainment.</p>
+        <div class="social-links">
+            <a href="#">Twitter</a>
+            <a href="#">Discord</a>
+            <a href="#">YouTube</a>
+            <a href="#">Reddit</a>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script src="js/image-loader.js"></script>
+    <script src="js/image-checker.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const mapCategories = document.querySelectorAll('.map-category');
+            const mapCountText = document.getElementById('map-count-text');
+            const mapOptions = document.querySelectorAll('.map-option');
+            const mapModal = document.getElementById('map-modal');
+            const closeModal = document.getElementById('close-modal');
+            
+            // Map descriptions
+            const mapDescriptions = {
+                'antarctic-peninsula': 'Antarctic Peninsula is a control map set in the frozen wilderness where Mei once worked. The map features tight corridors and wide-open areas with stunning views.',
+                'busan': 'Busan is a control map set in South Korea, featuring three distinct locations: Sanctuary, Downtown, and MEKA Base, the home of D.Va.',
+                'ilios': 'Ilios is a control map set in Greece, featuring beautiful white buildings and stunning ocean views across its three distinct areas.',
+                'lijiang': 'Lijiang Tower is a control map set in a futuristic Chinese city with traditional architectural influences across its three locations.',
+                'nepal': 'Nepal is a control map set in a Shambali monastery in the Himalayas, where Zenyatta and other omnics seek enlightenment.',
+                'oasis': 'Oasis is a control map set in a high-tech scientific city in the Arabian Desert, featuring advanced architecture and technology.',
+                'samoa': 'Samoa is a control map that showcases the beautiful island landscapes and cultural elements of the Pacific islands.',
+                'circuit-royal': 'Circuit Royal is an escort map set in Monte Carlo, featuring a luxurious casino and racing track where players escort a hovering F1 car.',
+                'dorado': 'Dorado is an escort map set in Mexico during a local festival, with colorful streets and a power plant destination.',
+                'havana': 'Havana is an escort map set in Cuba, featuring historic architecture, a seaside fort, and a rum distillery.',
+                'junkertown': 'Junkertown is an escort map set in the Australian outback, home to Junkrat, Roadhog, and the Junker Queen.',
+                'rialto': 'Rialto is an escort map set in Venice, Italy, featuring canals, elegant architecture, and the headquarters of Talon.',
+                'route66': 'Route 66 is an escort map set along the historic U.S. highway, featuring a gas station, diner, and gorge leading to a weapons facility.',
+                'shambali': 'Shambali Monastery is an escort map set in the Himalayan mountains, the spiritual home of the omnic monks and origin of Zenyatta.',
+                'gibraltar': 'Watchpoint: Gibraltar is an escort map set in a former Overwatch facility where Winston resides, featuring spectacular views of the Rock of Gibraltar.',
+                'blizzard-world': 'Blizzard World is a hybrid map themed as an amusement park featuring attractions based on various Blizzard games.',
+                'eichenwalde': 'Eichenwalde is a hybrid map set in an abandoned German castle town where the legendary Crusader Balderich made his last stand.',
+                'hollywood': 'Hollywood is a hybrid map set in a movie studio backlot with various film sets and production facilities.',
+                'kings-row': 'King\'s Row is a hybrid map set in a London neighborhood at night, with both upscale areas and an underground omnic district.',
+                'midtown': 'Midtown is a hybrid map set in a futuristic version of New York City, featuring recognizable landmarks and architecture.',
+                'numbani': 'Numbani is a hybrid map set in a futuristic African city where humans and omnics live in harmony, home to Doomfist\'s gauntlet exhibit.',
+                'paraiso': 'Paraíso is a hybrid map set in Lucio\'s hometown in Brazil, featuring colorful streets, a night club, and his recording studio.',
+                'colosseo': 'Colosseo is a push map set in Rome, Italy, featuring historic architecture and a pathway through the iconic Colosseum.',
+                'esperanca': 'Esperança is a push map set in Portugal, showcasing Mediterranean architecture and winding cobblestone streets.',
+                'new-queen-street': 'New Queen Street is a push map set in Toronto, Canada, featuring modern city architecture and multicultural influences.',
+                'runasapi': 'Runasapi is a push map set in the Peruvian Andes, featuring ancient ruins and mountainous landscapes.',
+                'aatlis': 'Aatlis is a flashpoint map set in the Atlantic Ocean on a science facility designed for deep-sea exploration.',
+                'new-junk-city': 'New Junk City is a flashpoint map in a dystopian urban environment, filled with scrap and industrial elements.',
+                'suravasa': 'Suravasa is a flashpoint map set in India, featuring beautiful architecture and cultural landmarks.',
+                'hanaoka': 'Hanaoka is a clash map set in a Japanese village, featuring traditional architecture and cherry blossoms.',
+                'throne-of-anubis': 'Throne of Anubis is a clash map set in an Egyptian temple complex dedicated to the god Anubis, filled with ancient architecture and technology.'
+            };
+            
+            // Filter functionality
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const type = this.getAttribute('data-type');
+                    
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter categories
+                    if (type === 'all') {
+                        mapCategories.forEach(cat => cat.style.display = 'block');
+                        updateMapCount();
+                    } else {
+                        mapCategories.forEach(cat => {
+                            if (cat.getAttribute('data-type') === type) {
+                                cat.style.display = 'block';
+                            } else {
+                                cat.style.display = 'none';
+                            }
+                        });
+                        updateMapCount(type);
+                    }
+                });
+            });
+            
+            // Update map count
+            function updateMapCount(type = 'all') {
+                if (type === 'all') {
+                    const totalMaps = mapOptions.length;
+                    mapCountText.textContent = `Showing all ${totalMaps} maps`;
+                } else {
+                    // Count maps in the visible category
+                    const visibleCategory = document.querySelector(`.map-category[data-type="${type}"]`);
+                    if (visibleCategory) {
+                        const mapsInCategory = visibleCategory.querySelectorAll('.map-option');
+                        const typeName = type.charAt(0).toUpperCase() + type.slice(1);
+                        mapCountText.textContent = `Showing ${mapsInCategory.length} ${typeName} maps`;
+                    }
+                }
+            }
+            
+            // Map click to show modal
+            mapOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const mapName = this.querySelector('.map-name').textContent;
+                    const mapSlug = this.getAttribute('data-map');
+                    // Find the type from the parent map-category
+                    const mapCategory = this.closest('.map-category');
+                    const mapType = mapCategory ? mapCategory.getAttribute('data-type') : 'unknown';
+                    
+                    // Update modal content
+                    document.getElementById('modal-map-name').textContent = mapName;
+                    document.getElementById('modal-map-type').textContent = mapType.charAt(0).toUpperCase() + mapType.slice(1);
+                    document.getElementById('modal-map-description').textContent = mapDescriptions[mapSlug] || 'Description coming soon.';
+                    
+                    // Set map image
+                    const modalImage = document.getElementById('modal-map-image');
+                    modalImage.src = `images/maps/${mapSlug}.png`;
+                    modalImage.alt = mapName;
+                    modalImage.onerror = function() {
+                        this.style.display = 'none';
+                    };
+                    
+                    // Show modal
+                    mapModal.classList.add('active');
+                });
+            });
+            
+            // Close modal
+            closeModal.addEventListener('click', function() {
+                mapModal.classList.remove('active');
+            });
+            
+            // Close modal on background click
+            mapModal.addEventListener('click', function(e) {
+                if (e.target === mapModal) {
+                    mapModal.classList.remove('active');
+                }
+            });
+            
+            // Initialize count
+            updateMapCount();
+        });
+    </script>
+</body>
+</html>
