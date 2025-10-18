@@ -25,7 +25,7 @@ The tool aims to assist both casual and competitive players in making data-drive
    - Grid view of all Overwatch 2 maps organized by game mode (Control, Escort, Hybrid, Push, Flashpoint, Clash) 
 
 3. **Hero Ban Selection**  
-   - Interface to select up to 5 banned heroes  
+   - Interface to select up to 4 banned heroes  
    - Filter heroes by **Tank**, **Damage**, or **Support** roles  
 
 4. **Recommendations**  

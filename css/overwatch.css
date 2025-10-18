@@ -274,6 +274,29 @@
     display: none; /* This hides the hovering labels */
 }
 
+/* No Hero Bans / Quickplay button */
+.quickplay-option {
+    text-align: center;
+    margin: 1rem 0 2rem;
+}
+
+.no-bans-btn {
+    background: linear-gradient(135deg, #218ffe, #218ffe);
+    color: white;
+    border: none;
+    padding: 0.8rem 2rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.no-bans-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(33, 134, 254, 0.5);
+}
+
 .hero-name {
     display: block;
     text-align: center;
