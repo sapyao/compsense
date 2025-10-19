@@ -126,6 +126,220 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+    // Hero effectiveness on different maps
+    const heroMapEffectiveness = {
+        // Tank heroes
+        'Winston': {
+            'dorado': 90, 'gibraltar': 80,
+            'new-junk-city': 40, 'havana': 40
+        },
+        'Reinhardt': {
+            'lijiang': 90,
+            'dorado': 40, 'paraiso': 40
+        },
+        'Zarya': {
+            'kings-row': 90, 
+            'gibraltar': 40, 'havana': 40 
+        },
+        'D.Va': {
+            'dorado': 90,
+            'new-junk-city': 40, 'suravasa': 40,
+        },
+        'Sigma': {
+            'circuit-royal': 90,
+            'new-junk-city': 40, 'gibraltar': 40
+        },
+        'Orisa': {
+            'ilios': 90, 
+            'gibraltar': 40, 'numbani': 40
+        },
+        'Wrecking Ball': {
+            'junkertown': 90, 'colosseo': 75, 'new-queen-street': 75, 'runasapi': 75, 'suravasa': 75, 'new-junk-city': 75,
+            'circuit-royal': 40, 'kings-row': 40
+        },
+        'Roadhog': {
+            'ilios': 90,
+            'havana': 40, 'gibraltar': 40
+        },
+        'Doomfist': {
+            'ilios': 90, 'circuit-royal': 75
+        },
+        'Junker Queen': {
+            'suravasa': 90,
+            'gibraltar': 40, 'paraiso': 40
+        },
+        'Ramattra': {
+            'colosseo': 90,
+            'new-queen-street': 40, 'dorado': 40
+        },
+        'Mauga': {
+            'oasis': 90,
+            'dorado': 40, 'junkertown': 40
+        },
+        'Hazard': {
+            'gibraltar': 90, 'dorado': 80, 'new-junk-city': 80, 'paraiso': 75, 'eichenwalde': 60, 'kings-row': 60,
+            'havana': 40, 'shambali': 40
+        },
+
+        // Damage heroes
+        'Widowmaker': {
+            'junkertown': 95, 'circuit-royal': 90, 'havana': 85,   // Strong on long sightline maps
+            'ilios': 80, 'gibraltar': 85,                          // Good on maps with sightlines
+            'kings-row': 60, 'eichenwalde': 65                     // Weaker on enclosed maps
+        },
+        'Hanzo': {
+            'junkertown': 85, 'havana': 80, 'gibraltar': 80,       // Strong on maps with sightlines
+            'kings-row': 80, 'eichenwalde': 75,                    // Good on hybrid maps
+            'ilios': 70, 'lijiang': 75                             // Average on control maps
+        },
+        'Ashe': {
+            'route66': 90,
+            'suravasa': 40, 'lijiang': 40
+        },
+        'Soldier: 76': {
+            'junkertown': 85, 'circuit-royal': 80, 'havana': 75,   // Strong on maps with high ground
+            'gibraltar': 80, 'numbani': 75,                        // Good on vertical maps
+            'kings-row': 70, 'colosseo': 70                        // Average on enclosed maps
+        },
+        'Tracer': {
+            'ilios': 90, 'lijiang': 85, 'oasis': 85,              // Strong on control maps
+            'kings-row': 80, 'numbani': 75,                        // Good on maps with flanking routes
+            'junkertown': 60, 'havana': 65                         // Weaker on open maps
+        },
+        'Genji': {
+            'ilios': 85, 'lijiang': 80, 'busan': 75,               // Strong on control maps
+            'numbani': 80, 'gibraltar': 75,                        // Good on vertical maps
+            'junkertown': 65, 'circuit-royal': 70                  // Average on open maps
+        },
+        'Sombra': {
+            'ilios': 80, 'lijiang': 75, 'busan': 75,               // Strong on control maps
+            'numbani': 75, 'dorado': 70,                           // Good on maps with health packs
+            'kings-row': 65, 'eichenwalde': 70                     // Average on tight maps
+        },
+        'Reaper': {
+            'kings-row': 90, 'eichenwalde': 85, 'colosseo': 80,    // Strong on tight maps
+            'lijiang': 85, 'nepal': 80,                            // Good on control maps
+            'junkertown': 50, 'circuit-royal': 55                  // Weak on open maps
+        },
+        'Echo': {
+            'ilios': 85, 'gibraltar': 80, 'numbani': 80,           // Strong on maps with verticality
+            'busan': 75, 'lijiang': 75,                            // Good on control maps
+            'kings-row': 65, 'eichenwalde': 70                     // Average on enclosed maps
+        },
+        'Pharah': {
+            'ilios': 90, 'lijiang': 85, 'oasis': 85,               // Strong on maps with open skybox
+            'numbani': 80, 'gibraltar': 80,                        // Good on vertical maps
+            'kings-row': 60, 'eichenwalde': 65                     // Weak on enclosed maps
+        },
+        'Junkrat': {
+            'kings-row': 90, 'eichenwalde': 85, 'colosseo': 80,    // Strong on choke point maps
+            'lijiang': 80, 'nepal': 75,                            // Good on enclosed control maps
+            'junkertown': 65, 'circuit-royal': 60                  // Weaker on open maps
+        },
+        'Mei': {
+            'kings-row': 85, 'eichenwalde': 80, 'colosseo': 80,    // Strong on maps with chokes
+            'lijiang': 80, 'nepal': 75,                            // Good on control maps
+            'junkertown': 60, 'circuit-royal': 65                  // Weaker on open maps
+        },
+        'Cassidy': {
+            'kings-row': 80, 'dorado': 75, 'route66': 75,          // Strong on medium-range maps
+            'lijiang': 75, 'nepal': 70,                            // Good on control maps
+            'junkertown': 65, 'circuit-royal': 70                  // Average on open maps
+        },
+        'Sojourn': {
+            'junkertown': 85, 'circuit-royal': 80, 'havana': 80,   // Strong on long sightline maps
+            'kings-row': 75, 'eichenwalde': 70,                    // Good on hybrid maps
+            'lijiang': 70, 'nepal': 70                             // Average on control maps
+        },
+        'Symmetra': {
+            'kings-row': 85, 'eichenwalde': 80, 'colosseo': 75,    // Strong on maps with chokes
+            'lijiang': 75, 'nepal': 70,                            // Good on control maps
+            'junkertown': 55, 'circuit-royal': 50                  // Weak on open maps
+        },
+        'Bastion': {
+            'junkertown': 85, 'circuit-royal': 80, 'havana': 75,   // Strong on maps with sightlines
+            'kings-row': 70, 'eichenwalde': 65,                    // Average on hybrid maps
+            'ilios': 55, 'lijiang': 50                             // Weak on control maps
+        },
+        'Torbjorn': {
+            'kings-row': 80, 'eichenwalde': 75, 'havana': 70,      // Strong on defense maps
+            'lijiang': 70, 'nepal': 65,                            // Average on control maps
+            'ilios': 65, 'busan': 60                               // Weaker on open control maps
+        },
+        'Venture': {
+            'kings-row': 80, 'eichenwalde': 75, 'colosseo': 75,    // Strong on maps with underground routes
+            'lijiang': 75, 'nepal': 70,                            // Good on control maps
+            'junkertown': 65, 'circuit-royal': 60                  // Average on open maps
+        },
+        'Freja': {
+            'junkertown': 80, 'circuit-royal': 75, 'havana': 70,   // Strong on open maps
+            'ilios': 75, 'busan': 70,                              // Good on control maps
+            'kings-row': 65, 'eichenwalde': 60                     // Average on tight maps
+        },
+
+        // Support heroes
+        'Lucio': {
+            'ilios': 95, 'lijiang': 90, 'nepal': 85,               // Strong on maps with ledges
+            'kings-row': 85, 'eichenwalde': 80,                    // Good on brawl maps
+            'junkertown': 60, 'circuit-royal': 65                  // Weaker on open maps
+        },
+        'Ana': {
+            'junkertown': 85, 'havana': 80, 'gibraltar': 85,       // Strong on maps with sightlines
+            'kings-row': 75, 'blizzard-world': 80,                 // Good on hybrid maps
+            'ilios': 65, 'nepal': 70                               // Variable on control maps
+        },
+        'Mercy': {
+            'ilios': 80, 'lijiang': 75, 'numbani': 85,             // Strong with vertical mobility
+            'gibraltar': 80, 'dorado': 75,                         // Good on maps with cover
+            'kings-row': 65, 'eichenwalde': 70                     // Average on enclosed maps
+        },
+        'Zenyatta': {
+            'junkertown': 80, 'havana': 75, 'gibraltar': 75,       // Strong on open sightline maps
+            'kings-row': 70, 'eichenwalde': 65,                    // Average on hybrid maps
+            'ilios': 65, 'lijiang': 60                             // Weaker on control maps
+        },
+        'Baptiste': {
+            'kings-row': 80, 'eichenwalde': 75, 'colosseo': 75,    // Strong on maps with high ground
+            'havana': 75, 'junkertown': 70,                        // Good on maps with sightlines
+            'ilios': 65, 'lijiang': 60                             // Average on control maps
+        },
+        'Moira': {
+            'kings-row': 90, 'eichenwalde': 85, 'colosseo': 80,    // Strong on enclosed maps
+            'lijiang': 80, 'nepal': 75,                            // Good on control maps
+            'junkertown': 55, 'circuit-royal': 60                  // Weak on open maps
+        },
+        'Brigitte': {
+            'kings-row': 85, 'eichenwalde': 80, 'colosseo': 80,    // Strong on brawl maps
+            'lijiang': 80, 'nepal': 75,                            // Good on control maps
+            'junkertown': 50, 'circuit-royal': 55                  // Weak on open maps
+        },
+        'Kiriko': {
+            'kings-row': 80, 'eichenwalde': 75, 'colosseo': 75,    // Strong on maps with verticality
+            'lijiang': 80, 'nepal': 75,                            // Good on control maps
+            'junkertown': 65, 'circuit-royal': 60                  // Average on open maps
+        },
+        'Lifeweaver': {
+            'kings-row': 75, 'eichenwalde': 70, 'havana': 70,      // Good on maps with high ground
+            'ilios': 75, 'nepal': 70,                              // Good on control maps
+            'junkertown': 65, 'circuit-royal': 60                  // Average on open maps
+        },
+        'Illari': {
+            'junkertown': 80, 'circuit-royal': 75, 'havana': 75,   // Strong on long sightline maps
+            'kings-row': 70, 'eichenwalde': 65,                    // Average on hybrid maps
+            'lijiang': 70, 'nepal': 65                             // Average on control maps
+        },
+        'Juno': {
+            'kings-row': 80, 'eichenwalde': 75, 'colosseo': 75,    // Strong on tight maps
+            'lijiang': 75, 'nepal': 70,                            // Good on control maps
+            'junkertown': 65, 'circuit-royal': 60                  // Average on open maps
+        },
+        'Wuyang': {
+            'kings-row': 80, 'eichenwalde': 75, 'colosseo': 75,    // Strong on choke point maps
+            'lijiang': 75, 'nepal': 70,                            // Good on control maps
+            'junkertown': 65, 'circuit-royal': 60                  // Average on open maps
+        }
+    };
+
     // Screen navigation functions
     function showMainInterface() {
         // Welcome screen removed
@@ -274,20 +488,308 @@ document.addEventListener('DOMContentLoaded', function() {
     if (availableComps.length > 1) {
         displayCompositionCard(availableComps[1], false);
     }
+
+    displayWorstHeroes();
+}
+
+function getBestHeroesForMap(mapId, role, bannedHeroes = []) {
+    const mapInfo = mapData[mapId];
+    if (!mapInfo) return [];
+    
+    // Get all heroes of the specified role
+    let heroes = [];
+    if (role === 'tank') {
+        // Combine all tank heroes from all compositions
+        heroes = [...new Set(Object.values(compositionData).flatMap(comp => comp.heroes.tank))];
+    } else if (role === 'damage') {
+        heroes = [...new Set(Object.values(compositionData).flatMap(comp => comp.heroes.damage))];
+    } else if (role === 'support') {
+        heroes = [...new Set(Object.values(compositionData).flatMap(comp => comp.heroes.support))];
+    }
+    
+    // Filter out banned heroes
+    heroes = heroes.filter(hero => !bannedHeroes.some(banned => 
+        hero.toLowerCase().includes(banned.toLowerCase())
+    ));
+    
+    // Calculate effectiveness scores
+    const heroScores = heroes.map(hero => {
+        // Base score from hero-map data if available
+        let score = heroMapEffectiveness[hero]?.[mapId] || 50;
+        
+        // Adjust score based on map type and composition strengths
+        const mapType = mapInfo.type;
+        const mapStrengths = mapInfo.strengths;
+        
+        // Find which compositions this hero is part of
+        const heroComps = Object.entries(compositionData)
+            .filter(([_, comp]) => comp.heroes[role].includes(hero))
+            .map(([key, _]) => key);
+        
+        // Boost score based on composition effectiveness on this map
+        let compBonus = 0;
+        heroComps.forEach(compKey => {
+            compBonus += (mapStrengths[compKey] || 50) * 0.3; // 30% weight from comp effectiveness
+        });
+        
+        // Average the bonus if hero is in multiple comps
+        if (heroComps.length > 0) {
+            compBonus /= heroComps.length;
+            score = score * 0.7 + compBonus; // 70% from hero-map data, 30% from comp effectiveness
+        }
+        
+        return { hero, score };
+    });
+    
+    // Sort heroes by score
+    return heroScores.sort((a, b) => b.score - a.score);
+}
+
+function getWorstHeroesForMap(mapId, role, bannedHeroes = []) {
+    // Reuse the same logic as getBestHeroesForMap but sort in ascending order
+    const mapInfo = mapData[mapId];
+    if (!mapInfo) return [];
+    
+    // Get all heroes of the specified role
+    let heroes = [];
+    if (role === 'tank') {
+        heroes = [...new Set(Object.values(compositionData).flatMap(comp => comp.heroes.tank))];
+    } else if (role === 'damage') {
+        heroes = [...new Set(Object.values(compositionData).flatMap(comp => comp.heroes.damage))];
+    } else if (role === 'support') {
+        heroes = [...new Set(Object.values(compositionData).flatMap(comp => comp.heroes.support))];
+    }
+    
+    // Filter out banned heroes
+    heroes = heroes.filter(hero => !bannedHeroes.some(banned => 
+        hero.toLowerCase().includes(banned.toLowerCase())
+    ));
+    
+    // Calculate effectiveness scores
+    const heroScores = heroes.map(hero => {
+        // Base score from hero-map data if available
+        let score = heroMapEffectiveness[hero]?.[mapId] || 50;
+        
+        // Adjust score based on map type and composition strengths
+        const mapType = mapInfo.type;
+        const mapStrengths = mapInfo.strengths;
+        
+        // Find which compositions this hero is part of
+        const heroComps = Object.entries(compositionData)
+            .filter(([_, comp]) => comp.heroes[role].includes(hero))
+            .map(([key, _]) => key);
+        
+        // Factor in composition effectiveness on this map
+        let compBonus = 0;
+        heroComps.forEach(compKey => {
+            compBonus += (mapStrengths[compKey] || 50) * 0.3;
+        });
+        
+        if (heroComps.length > 0) {
+            compBonus /= heroComps.length;
+            score = score * 0.7 + compBonus;
+        }
+        
+        return { hero, score };
+    });
+    
+    // Sort heroes by score ascending (worst first)
+    return heroScores.sort((a, b) => a.score - b.score);
 }
 
 function displayCompositionCard(compData, isPrimary) {
     if (!compData) return;
     
-    const { comp, effectiveness } = compData;
-    const cardClass = isPrimary ? 'primary-comp' : 'alternative-comp';
-    const cardTitle = isPrimary ? 'Primary Recommendation' : 'Alternative Option';
+    const { comp, effectiveness, key } = compData;
+    const container = document.querySelector(isPrimary ? '.primary-comp' : '.alternative-comp');
     
-    // This would update the existing card in the HTML
-    // You'd need to add logic to dynamically create cards or update existing ones
+    if (!container) return;
+    
+    // Update composition name and description
+    const titleElement = container.querySelector('h4');
+    if (titleElement) {
+        titleElement.textContent = comp.name;
+    }
+    
+    const descriptionElement = container.querySelector('p');
+    if (descriptionElement) {
+        descriptionElement.textContent = comp.strategy;
+    }
+    
+    // Get best heroes for this map for each role
+    const bestTanks = getBestHeroesForMap(selectedMap, 'tank', bannedHeroes).slice(0, 2);
+    const bestDamage = getBestHeroesForMap(selectedMap, 'damage', bannedHeroes).slice(0, 3);
+    const bestSupport = getBestHeroesForMap(selectedMap, 'support', bannedHeroes).slice(0, 2);
+    
+    // Create hero recommendations HTML
+    const heroRecommendations = document.createElement('div');
+    heroRecommendations.classList.add('hero-recommendations');
+    
+    // Add tank recommendations
+    const tankSection = document.createElement('div');
+    tankSection.classList.add('role-recommendations');
+    tankSection.innerHTML = '<h5>Tank</h5>';
+    bestTanks.forEach(tank => {
+        const heroDiv = document.createElement('div');
+        heroDiv.classList.add('recommended-hero');
+        heroDiv.innerHTML = `
+            <div class="hero-image" data-hero="${tank.hero.toLowerCase().replace(/[:\s\.\']+/g, '-')}"></div>
+            <span class="hero-name">${tank.hero}</span>
+            <div class="hero-score">${Math.round(tank.score)}%</div>
+        `;
+        tankSection.appendChild(heroDiv);
+    });
+    heroRecommendations.appendChild(tankSection);
+    
+    // Add damage recommendations
+    const damageSection = document.createElement('div');
+    damageSection.classList.add('role-recommendations');
+    damageSection.innerHTML = '<h5>Damage</h5>';
+    bestDamage.forEach(damage => {
+        const heroDiv = document.createElement('div');
+        heroDiv.classList.add('recommended-hero');
+        heroDiv.innerHTML = `
+            <div class="hero-image" data-hero="${damage.hero.toLowerCase().replace(/[:\s\.\']+/g, '-')}"></div>
+            <span class="hero-name">${damage.hero}</span>
+            <div class="hero-score">${Math.round(damage.score)}%</div>
+        `;
+        damageSection.appendChild(heroDiv);
+    });
+    heroRecommendations.appendChild(damageSection);
+    
+    // Add support recommendations
+    const supportSection = document.createElement('div');
+    supportSection.classList.add('role-recommendations');
+    supportSection.innerHTML = '<h5>Support</h5>';
+    bestSupport.forEach(support => {
+        const heroDiv = document.createElement('div');
+        heroDiv.classList.add('recommended-hero');
+        heroDiv.innerHTML = `
+            <div class="hero-image" data-hero="${support.hero.toLowerCase().replace(/[:\s\.\']+/g, '-')}"></div>
+            <span class="hero-name">${support.hero}</span>
+            <div class="hero-score">${Math.round(support.score)}%</div>
+        `;
+        supportSection.appendChild(heroDiv);
+    });
+    heroRecommendations.appendChild(supportSection);
+    
+    // Clear existing recommendations and add new ones
+    const existingRecs = container.querySelector('.hero-recommendations');
+    if (existingRecs) {
+        existingRecs.remove();
+    }
+    
+    container.appendChild(heroRecommendations);
+    
+    // Update effectiveness bar
+    const strengthFill = container.querySelector('.strength-fill');
+    if (strengthFill) {
+        strengthFill.style.width = `${effectiveness}%`;
+    }
 }
 
-    function resetState() {
+function displayWorstHeroes() {
+    // Create container or use existing one
+    let container = document.querySelector('.worst-heroes-section');
+    if (!container) {
+        container = document.createElement('div');
+        container.classList.add('worst-heroes-section', 'comp-card');
+        
+        // Add heading
+        const heading = document.createElement('h3');
+        heading.textContent = 'Heroes to Avoid';
+        container.appendChild(heading);
+        
+        // Add to DOM before the comp-actions div
+        const compActions = document.querySelector('.comp-actions');
+        document.querySelector('.recommended-comps').insertBefore(container, compActions);
+    } else {
+        // Clear existing content except heading
+        const heading = container.querySelector('h3');
+        container.innerHTML = '';
+        if (heading) {
+            container.appendChild(heading);
+        } else {
+            const newHeading = document.createElement('h3');
+            newHeading.textContent = 'Heroes to Avoid';
+            container.appendChild(newHeading);
+        }
+    }
+    
+    // Get worst heroes for each role
+    const worstTanks = getWorstHeroesForMap(selectedMap, 'tank', bannedHeroes).slice(0, 2);
+    const worstDamage = getWorstHeroesForMap(selectedMap, 'damage', bannedHeroes).slice(0, 2);
+    const worstSupport = getWorstHeroesForMap(selectedMap, 'support', bannedHeroes).slice(0, 2);
+    
+    // Create hero recommendations-style layout
+    const heroRecommendations = document.createElement('div');
+    heroRecommendations.classList.add('hero-recommendations');
+    
+    // Add tank section
+    const tankSection = document.createElement('div');
+    tankSection.classList.add('role-recommendations');
+    tankSection.innerHTML = '<h5>Tank</h5>';
+    worstTanks.forEach(tank => {
+        const heroDiv = document.createElement('div');
+        heroDiv.classList.add('recommended-hero');
+        heroDiv.innerHTML = `
+            <div class="hero-image" data-hero="${tank.hero.toLowerCase().replace(/[:\s\.\']+/g, '-')}"></div>
+            <span class="hero-name">${tank.hero}</span>
+            <div class="hero-score">${Math.round(tank.score)}%</div>
+        `;
+        tankSection.appendChild(heroDiv);
+    });
+    heroRecommendations.appendChild(tankSection);
+    
+    // Add damage section
+    const damageSection = document.createElement('div');
+    damageSection.classList.add('role-recommendations');
+    damageSection.innerHTML = '<h5>Damage</h5>';
+    worstDamage.forEach(damage => {
+        const heroDiv = document.createElement('div');
+        heroDiv.classList.add('recommended-hero');
+        heroDiv.innerHTML = `
+            <div class="hero-image" data-hero="${damage.hero.toLowerCase().replace(/[:\s\.\']+/g, '-')}"></div>
+            <span class="hero-name">${damage.hero}</span>
+            <div class="hero-score">${Math.round(damage.score)}%</div>
+        `;
+        damageSection.appendChild(heroDiv);
+    });
+    heroRecommendations.appendChild(damageSection);
+    
+    // Add support section
+    const supportSection = document.createElement('div');
+    supportSection.classList.add('role-recommendations');
+    supportSection.innerHTML = '<h5>Support</h5>';
+    worstSupport.forEach(support => {
+        const heroDiv = document.createElement('div');
+        heroDiv.classList.add('recommended-hero');
+        heroDiv.innerHTML = `
+            <div class="hero-image" data-hero="${support.hero.toLowerCase().replace(/[:\s\.\']+/g, '-')}"></div>
+            <span class="hero-name">${support.hero}</span>
+            <div class="hero-score">${Math.round(support.score)}%</div>
+        `;
+        supportSection.appendChild(heroDiv);
+    });
+    heroRecommendations.appendChild(supportSection);
+    
+    // Add description/strategy section to match your layout
+    const avoidDetails = document.createElement('div');
+    avoidDetails.classList.add('comp-details');
+    
+    const avoidTitle = document.createElement('h4');
+    avoidTitle.textContent = 'Map Weaknesses';
+    avoidDetails.appendChild(avoidTitle);
+    
+    const avoidDescription = document.createElement('p');
+    avoidDescription.textContent = 'These heroes are less effective on this map due to map layout, sightlines, or objective type.';
+    avoidDetails.appendChild(avoidDescription);
+    
+    container.appendChild(heroRecommendations);
+    container.appendChild(avoidDetails);
+}
+
+function resetState() {
         selectedMap = '';
         selectedMapType = '';
         bannedHeroes = [];
