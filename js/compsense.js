@@ -443,33 +443,65 @@ document.addEventListener('DOMContentLoaded', function() {
         bannedHeroesList.appendChild(noHeroesSpan);
     }
     
-    // Determine best compositions based on map effectiveness
-    const mapStrengths = mapInfo.strengths
+    // Get compositions sorted by effectiveness for this map
+    const mapStrengths = mapInfo?.strengths || { dive: 50, brawl: 50, poke: 50 };
     
-    // Sort compositions by effectiveness on this map
-    const sortedComps = Object.entries(compositionData)
-        .map(([key, comp]) => ({
-            key,
-            comp,
-            effectiveness: mapStrengths[key] || 50
-        }))
-        .sort((a, b) => b.effectiveness - a.effectiveness);
+    // Create composition objects for all three strategies
+    const strategyComps = [
+        { key: 'dive', comp: compositionData.dive, effectiveness: mapStrengths.dive || 50 },
+        { key: 'brawl', comp: compositionData.brawl, effectiveness: mapStrengths.brawl || 50 },
+        { key: 'poke', comp: compositionData.poke, effectiveness: mapStrengths.poke || 50 }
+    ];
     
-    // Filter out compositions with banned heroes
-    const availableComps = sortedComps.filter(({ comp }) => {
-        const allHeroes = [...comp.heroes.tank, ...comp.heroes.damage, ...comp.heroes.support];
-        return !bannedHeroes.some(banned => 
-            allHeroes.some(hero => hero.toLowerCase().includes(banned.toLowerCase()))
-        );
-    });
+    // Sort by effectiveness (highest first)
+    strategyComps.sort((a, b) => b.effectiveness - a.effectiveness);
     
-    // Display primary and alternative compositions
-    displayCompositionCard(availableComps[0], true);
-    if (availableComps.length > 1) {
-        displayCompositionCard(availableComps[1], false);
+    // Clear existing composition cards
+    const recommendedComps = document.querySelector('.recommended-comps');
+    
+    // Store comp-actions and worst-heroes-section to add back later
+    const compActions = document.querySelector('.comp-actions');
+    if (compActions) compActions.remove(); // Temporarily remove
+    
+    const worstHeroesSection = document.querySelector('.worst-heroes-section');
+    if (worstHeroesSection) worstHeroesSection.remove();
+    
+    // Clear all other content
+    recommendedComps.innerHTML = '';
+    
+    // Create three comp cards
+    for (let i = 0; i < strategyComps.length; i++) {
+        const strategy = strategyComps[i];
+        
+        // Create comp card with appropriate class
+        const compCard = document.createElement('div');
+        compCard.classList.add('comp-card');
+        
+        // Add primary class to the most effective strategy
+        if (i === 0) {
+            compCard.classList.add('primary-comp');
+        } else {
+            compCard.classList.add('alternative-comp');
+        }
+        
+        // Add a heading that shows position
+        let headingText = '';
+        if (i === 0) headingText = 'Best Strategy';
+        else if (i === 1) headingText = 'Second Best Strategy';
+        else headingText = 'Third Strategy';
+        
+        compCard.innerHTML = `<h3>${headingText}</h3>`;
+        recommendedComps.appendChild(compCard);
+        
+        // Populate the card with composition details
+        displayCompositionCard(strategy, i === 0, compCard);
     }
-
+    
+    // Display heroes to avoid
     displayWorstHeroes();
+    
+    // Add back the comp-actions
+    if (compActions) recommendedComps.appendChild(compActions);
 }
 
 function getBestHeroesForMap(mapId, role, bannedHeroes = []) {
@@ -577,29 +609,114 @@ function getWorstHeroesForMap(mapId, role, bannedHeroes = []) {
     return heroScores.sort((a, b) => a.score - b.score);
 }
 
-function displayCompositionCard(compData, isPrimary) {
+// New function to get best heroes for a specific strategy on a map
+function getBestHeroesForStrategy(mapId, strategy, role, bannedHeroes = []) {
+    const mapInfo = mapData[mapId];
+    if (!mapInfo) return [];
+    
+    const comp = compositionData[strategy];
+    if (!comp) return [];
+    
+    // Get the heroes for this strategy and role
+    let heroes = [];
+    if (role === 'tank') {
+        heroes = [...comp.heroes.tank];
+    } else if (role === 'damage') {
+        heroes = [...comp.heroes.damage];
+    } else if (role === 'support') {
+        heroes = [...comp.heroes.support];
+    }
+    
+    // Filter out banned heroes
+    heroes = heroes.filter(hero => !bannedHeroes.some(banned => 
+        hero.toLowerCase().includes(banned.toLowerCase())
+    ));
+    
+    // Calculate effectiveness scores
+    const heroScores = heroes.map(hero => {
+        // Base score from hero-map data if available
+        let score = heroMapEffectiveness[hero]?.[mapId] || 50;
+        
+        // Boost score a bit since this hero is part of the recommended strategy
+        score = Math.min(100, score * 1.1); // 10% boost, max 100
+        
+        return { hero, score };
+    });
+    
+    // Sort heroes by score
+    return heroScores.sort((a, b) => b.score - a.score);
+}
+
+function displayCompositionCard(compData, isPrimary, container) {
     if (!compData) return;
     
     const { comp, effectiveness, key } = compData;
-    const container = document.querySelector(isPrimary ? '.primary-comp' : '.alternative-comp');
     
-    if (!container) return;
-    
-    // Update composition name and description
-    const titleElement = container.querySelector('h4');
+    // Update composition name
+    const titleElement = container.querySelector('h3');
     if (titleElement) {
-        titleElement.textContent = comp.name;
+        // Keep the existing title (Best Strategy, Second Best, etc.)
+        const originalTitle = titleElement.textContent;
+        titleElement.textContent = `${originalTitle} - ${comp.name}`;
     }
     
-    const descriptionElement = container.querySelector('p');
-    if (descriptionElement) {
-        descriptionElement.textContent = comp.strategy;
-    }
+    // Create the composition details div
+    const compDetails = document.createElement('div');
+    compDetails.classList.add('comp-details');
     
-    // Get best heroes for this map for each role
-    const bestTanks = getBestHeroesForMap(selectedMap, 'tank', bannedHeroes).slice(0, 2);
-    const bestDamage = getBestHeroesForMap(selectedMap, 'damage', bannedHeroes).slice(0, 3);
-    const bestSupport = getBestHeroesForMap(selectedMap, 'support', bannedHeroes).slice(0, 2);
+    // Add strategy description (p)
+    const strategyDesc = document.createElement('p');
+    strategyDesc.textContent = comp.strategy;
+    compDetails.appendChild(strategyDesc);
+    
+    // Add effectiveness bar
+    const strengthContainer = document.createElement('div');
+    strengthContainer.classList.add('comp-strength');
+    
+    const strengthLabel = document.createElement('span');
+    strengthLabel.classList.add('strength-label');
+    strengthLabel.textContent = 'Map Effectiveness:';
+    strengthContainer.appendChild(strengthLabel);
+    
+    const strengthBar = document.createElement('div');
+    strengthBar.classList.add('strength-bar');
+    
+    const strengthFill = document.createElement('div');
+    strengthFill.classList.add('strength-fill');
+    strengthFill.style.width = `${effectiveness}%`;
+    strengthBar.appendChild(strengthFill);
+    
+    strengthContainer.appendChild(strengthBar);
+    
+    const strengthValue = document.createElement('span');
+    strengthValue.classList.add('strength-value');
+    strengthValue.textContent = `${effectiveness}%`;
+    strengthContainer.appendChild(strengthValue);
+    
+    compDetails.appendChild(strengthContainer);
+    
+    // Add strategy tips
+    const tipsContainer = document.createElement('div');
+    tipsContainer.classList.add('strategy-tips');
+    
+    const tipsHeader = document.createElement('h4');
+    tipsHeader.textContent = 'Strategy Tips:';
+    tipsContainer.appendChild(tipsHeader);
+    
+    const tipsList = document.createElement('ul');
+    comp.tips.forEach(tip => {
+        const listItem = document.createElement('li');
+        listItem.textContent = tip;
+        tipsList.appendChild(listItem);
+    });
+    tipsContainer.appendChild(tipsList);
+    
+    compDetails.appendChild(tipsContainer);
+    
+    // Get best heroes for this strategy on this map
+    const bestTanks = getBestHeroesForStrategy(selectedMap, key, 'tank', bannedHeroes).slice(0, 2);
+    const bestDamage = getBestHeroesForStrategy(selectedMap, key, 'damage', bannedHeroes).slice(0, 3);
+    const bestSupport = getBestHeroesForStrategy(selectedMap, key, 'support', bannedHeroes).slice(0, 2);
     
     // Create hero recommendations HTML
     const heroRecommendations = document.createElement('div');
@@ -653,19 +770,9 @@ function displayCompositionCard(compData, isPrimary) {
     });
     heroRecommendations.appendChild(supportSection);
     
-    // Clear existing recommendations and add new ones
-    const existingRecs = container.querySelector('.hero-recommendations');
-    if (existingRecs) {
-        existingRecs.remove();
-    }
-    
+    // Add hero recommendations and details to container
     container.appendChild(heroRecommendations);
-    
-    // Update effectiveness bar
-    const strengthFill = container.querySelector('.strength-fill');
-    if (strengthFill) {
-        strengthFill.style.width = `${effectiveness}%`;
-    }
+    container.appendChild(compDetails);
 }
 
 function displayWorstHeroes() {
