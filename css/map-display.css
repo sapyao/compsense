@@ -1,0 +1,44 @@
+.map-image-container {
+    width: 180px;
+    height: 120px;
+    margin-right: 1.5rem;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 2px solid rgba(58, 60, 80, 0.4);
+}
+
+.map-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.map-info {
+    display: flex;
+    align-items: center;
+}
+
+.map-text-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.map-text-info h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+/* Make sure the map info section has appropriate spacing in mobile view */
+@media (max-width: 768px) {
+    .map-info {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .map-image-container {
+        margin-right: 0;
+        margin-bottom: 1rem;
+        width: 100%;
+        height: 140px;
+    }
+}
