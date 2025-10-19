@@ -158,7 +158,7 @@
 }
 
 .hero-image[data-hero="d-va"] {
-    background-image: url('../images/heroes/dva.png');
+    background-image: url('../images/heroes/d-va.png');
 }
 
 .hero-image[data-hero="hazard"] {
@@ -255,7 +255,7 @@
 }
 
 .hero-image[data-hero="soldier-76"] {
-    background-image: url('../images/heroes/soldier76.png');
+    background-image: url('../images/heroes/soldier-76.png');
 }
 
 .hero-image[data-hero="sombra"] {
