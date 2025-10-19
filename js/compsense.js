@@ -187,84 +187,68 @@ document.addEventListener('DOMContentLoaded', function() {
             'suravasa': 40, 'lijiang': 40
         },
         'Bastion': {
-            'junkertown': 85, 'circuit-royal': 80, 'havana': 75,   // Strong on maps with sightlines
-            'kings-row': 70, 'eichenwalde': 65,                    // Average on hybrid maps
-            'ilios': 55, 'lijiang': 50                             // Weak on control maps
+            'kings-row': 90,
+            'gibraltar': 45, 'junkertown': 40, 'havana': 40
         },
         'Cassidy': {
             'kings-row': 80, 'dorado': 75, 'route66': 75,          // Strong on medium-range maps
-            'lijiang': 75, 'nepal': 70,                            // Good on control maps
-            'junkertown': 65, 'circuit-royal': 70                  // Average on open maps
+            'circuit-royal': 40, 'gibraltar': 40
         },
         'Echo': {
-            'ilios': 85, 'gibraltar': 80, 'numbani': 80,           // Strong on maps with verticality
-            'busan': 75, 'lijiang': 75,                            // Good on control maps
-            'kings-row': 65, 'eichenwalde': 70                     // Average on enclosed maps
+            'ilios': 90,
+            'busan': 40, 'circuit-royal': 40
         },
         'Freja': {
-            'junkertown': 80, 'circuit-royal': 75, 'havana': 70,   // Strong on open maps
-            'ilios': 75, 'busan': 70,                              // Good on control maps
-            'kings-row': 65, 'eichenwalde': 60                     // Average on tight maps
+            'ilios': 90,
+            'busan': 40, 'circuit-royal': 40 //edit
         },
         'Genji': {
-            'ilios': 85, 'lijiang': 80, 'busan': 75,               // Strong on control maps
-            'numbani': 80, 'gibraltar': 75,                        // Good on vertical maps
-            'junkertown': 65, 'circuit-royal': 70                  // Average on open maps
+            'ilios': 90, 'circuit-royal': 70, 'havana': 70,
+            'busan': 40, 'new-junk-city': 40
         },
         'Hanzo': {
-            'junkertown': 85, 'havana': 80, 'gibraltar': 80,       // Strong on maps with sightlines
-            'kings-row': 80, 'eichenwalde': 75,                    // Good on hybrid maps
-            'ilios': 70, 'lijiang': 75                             // Average on control maps
+            'junkertown': 90,
+            'oasis': 40, 'suravasa': 40
         },
         'Junkrat': {
-            'kings-row': 90, 'eichenwalde': 85, 'colosseo': 80,    // Strong on choke point maps
-            'lijiang': 80, 'nepal': 75,                            // Good on enclosed control maps
-            'junkertown': 65, 'circuit-royal': 60                  // Weaker on open maps
+            'kings-row': 90, 'eichenwalde': 90,
+            'gibraltar': 40, 'circuit-royal': 40, 'havana': 40
         },
         'Mei': {
-            'kings-row': 85, 'eichenwalde': 80, 'colosseo': 80,    // Strong on maps with chokes
-            'lijiang': 80, 'nepal': 75,                            // Good on control maps
-            'junkertown': 60, 'circuit-royal': 65                  // Weaker on open maps
+            'lijiang': 90,
+            'gibraltar': 40, 'junkertown': 40
         },
         'Pharah': {
-            'ilios': 90, 'lijiang': 85, 'oasis': 85,               // Strong on maps with open skybox
-            'numbani': 80, 'gibraltar': 80,                        // Good on vertical maps
-            'kings-row': 60, 'eichenwalde': 65                     // Weak on enclosed maps
+            'ilios': 90, 
+            'circuit-royal': 40, 'junkertown': 40
         },
         'Reaper': {
-            'kings-row': 90, 'eichenwalde': 85, 'colosseo': 80,    // Strong on tight maps
-            'lijiang': 85, 'nepal': 80,                            // Good on control maps
-            'junkertown': 50, 'circuit-royal': 55                  // Weak on open maps
+            'antarctic-peninsula': 90,
+            'esperanca': 40, 'havana': 40
         },
         'Sojourn': {
-            'junkertown': 85, 'circuit-royal': 80, 'havana': 80,   // Strong on long sightline maps
-            'kings-row': 75, 'eichenwalde': 70,                    // Good on hybrid maps
-            'lijiang': 70, 'nepal': 70                             // Average on control maps
+            'suravasa': 90,
+            'junkertown': 40, 'dorado': 40
         },
         'Soldier: 76': {
-            'junkertown': 85, 'circuit-royal': 80, 'havana': 75,   // Strong on maps with high ground
-            'gibraltar': 80, 'numbani': 75,                        // Good on vertical maps
-            'kings-row': 70, 'colosseo': 70                        // Average on enclosed maps
+            'new-junk-city': 90, 'new-queen-street': 90,
+            'circuit-royal': 40, 'havana': 40
         },
         'Sombra': {
-            'ilios': 80, 'lijiang': 75, 'busan': 75,               // Strong on control maps
-            'numbani': 75, 'dorado': 70,                           // Good on maps with health packs
-            'kings-row': 65, 'eichenwalde': 70                     // Average on tight maps
+            'new-queen-street': 90,
+            'circuit-royal': 40, 'shambali': 40
         },
         'Symmetra': {
-            'kings-row': 85, 'eichenwalde': 80, 'colosseo': 75,    // Strong on maps with chokes
-            'lijiang': 75, 'nepal': 70,                            // Good on control maps
-            'junkertown': 55, 'circuit-royal': 50                  // Weak on open maps
+            'lijiang': 90,
+            'esperanca': 40
         },
         'Torbjorn': {
-            'kings-row': 80, 'eichenwalde': 75, 'havana': 70,      // Strong on defense maps
-            'lijiang': 70, 'nepal': 65,                            // Average on control maps
-            'ilios': 65, 'busan': 60                               // Weaker on open control maps
+            'oasis': 90,
+            'havana': 40, 'junkertown': 40
         },
         'Tracer': {
-            'ilios': 90, 'lijiang': 85, 'oasis': 85,              // Strong on control maps
-            'kings-row': 80, 'numbani': 75,                        // Good on maps with flanking routes
-            'junkertown': 60, 'havana': 65                         // Weaker on open maps
+            'blizzard-world': 90,
+            'havana': 45, 'circuit-royal': 40 
         },
         'Venture': {
             'kings-row': 80, 'eichenwalde': 75, 'colosseo': 75,    // Strong on maps with underground routes
@@ -272,31 +256,26 @@ document.addEventListener('DOMContentLoaded', function() {
             'junkertown': 65, 'circuit-royal': 60                  // Average on open maps
         },
         'Widowmaker': {
-            'junkertown': 95, 'circuit-royal': 90, 'havana': 85,   // Strong on long sightline maps
-            'ilios': 80, 'gibraltar': 85,                          // Good on maps with sightlines
-            'kings-row': 60, 'eichenwalde': 65                     // Weaker on enclosed maps
+            'circuit-royal': 90,
+            'aatlis': 45, 'new-junk-city': 45, 'oasis': 40, 'suravasa': 40
         },
 
         // Support heroes
         'Ana': {
-            'junkertown': 85, 'havana': 80, 'gibraltar': 85,       // Strong on maps with sightlines
-            'kings-row': 75, 'blizzard-world': 80,                 // Good on hybrid maps
-            'ilios': 65, 'nepal': 70                               // Variable on control maps
+            'dorado': 90,
+            'circuit-royal': 40, 'havana': 40
         },
         'Baptiste': {
-            'kings-row': 80, 'eichenwalde': 75, 'colosseo': 75,    // Strong on maps with high ground
-            'havana': 75, 'junkertown': 70,                        // Good on maps with sightlines
-            'ilios': 65, 'lijiang': 60                             // Average on control maps
+            'colosseo': 90, 'circuit-royal': 80,
+            'dorado': 45, 'gibraltar': 40
         },
         'Brigitte': {
-            'kings-row': 85, 'eichenwalde': 80, 'colosseo': 80,    // Strong on brawl maps
-            'lijiang': 80, 'nepal': 75,                            // Good on control maps
-            'junkertown': 50, 'circuit-royal': 55                  // Weak on open maps
+            'rialto': 80,
+            'circuit-royal': 40, 'havana': 40
         },
         'Illari': {
-            'junkertown': 80, 'circuit-royal': 75, 'havana': 75,   // Strong on long sightline maps
-            'kings-row': 70, 'eichenwalde': 65,                    // Average on hybrid maps
-            'lijiang': 70, 'nepal': 65                             // Average on control maps
+            'rialto': 90, 'suravasa': 75, 'new-junk-city': 75, 'aatlis': 75,
+            'gibraltar': 40, 'circuit-royal': 40
         },
         'Juno': {
             'kings-row': 80, 'eichenwalde': 75, 'colosseo': 75,    // Strong on tight maps
@@ -304,29 +283,24 @@ document.addEventListener('DOMContentLoaded', function() {
             'junkertown': 65, 'circuit-royal': 60                  // Average on open maps
         },
         'Kiriko': {
-            'kings-row': 80, 'eichenwalde': 75, 'colosseo': 75,    // Strong on maps with verticality
-            'lijiang': 80, 'nepal': 75,                            // Good on control maps
-            'junkertown': 65, 'circuit-royal': 60                  // Average on open maps
+            'esperanca': 90, 'lijiang': 60,
+            'circuit-royal': 40
         },
         'Lifeweaver': {
-            'kings-row': 75, 'eichenwalde': 70, 'havana': 70,      // Good on maps with high ground
-            'ilios': 75, 'nepal': 70,                              // Good on control maps
-            'junkertown': 65, 'circuit-royal': 60                  // Average on open maps
+            'numbani': 90,
+            'havana': 40, 'lijiang': 40
         },
         'Lucio': {
-            'ilios': 95, 'lijiang': 90, 'nepal': 85,               // Strong on maps with ledges
-            'kings-row': 85, 'eichenwalde': 80,                    // Good on brawl maps
-            'junkertown': 60, 'circuit-royal': 65                  // Weaker on open maps
+            'ilios': 90,
+            'havana': 40, 'gibraltar': 40
         },
         'Mercy': {
-            'ilios': 80, 'lijiang': 75, 'numbani': 85,             // Strong with vertical mobility
-            'gibraltar': 80, 'dorado': 75,                         // Good on maps with cover
-            'kings-row': 65, 'eichenwalde': 70                     // Average on enclosed maps
+            'paraiso': 90, 'lijiang': 60,
+            'new-junk-city': 40, 'antarctic-peninsula': 40
         },
         'Moira': {
-            'kings-row': 90, 'eichenwalde': 85, 'colosseo': 80,    // Strong on enclosed maps
-            'lijiang': 80, 'nepal': 75,                            // Good on control maps
-            'junkertown': 55, 'circuit-royal': 60                  // Weak on open maps
+            'antarctic-peninsula': 90,
+            'havana': 40, 'junkertown': 40
         },
         'Wuyang': {
             'kings-row': 80, 'eichenwalde': 75, 'colosseo': 75,    // Strong on choke point maps
@@ -334,9 +308,8 @@ document.addEventListener('DOMContentLoaded', function() {
             'junkertown': 65, 'circuit-royal': 60                  // Average on open maps
         },
         'Zenyatta': {
-            'junkertown': 80, 'havana': 75, 'gibraltar': 75,       // Strong on open sightline maps
-            'kings-row': 70, 'eichenwalde': 65,                    // Average on hybrid maps
-            'ilios': 65, 'lijiang': 60                             // Weaker on control maps
+            'havana': 90, 'circuit-royal': 80, 'blizzard-world': 80,
+            'lijiang': 40, 'aatlis': 40, 'new-junk-city': 40, 'suravasa': 40
         }
     };
 
