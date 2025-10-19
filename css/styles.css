@@ -97,7 +97,6 @@ section {
     border-radius: 8px;
     position: relative;
     overflow: hidden;
-    background-image: url('../images/hero-bg.jpg');
     background-size: cover;
     background-position: center;
 }

@@ -82,17 +82,12 @@ document.addEventListener('DOMContentLoaded', function() {
         dive: {
             name: 'Dive Composition',
             heroes: {
-                tank: ['Winston', 'D.Va', 'Wrecking Ball', 'Doomfist', 'Hazard', 'Orisa'],
+                tank: ['Winston', 'D.Va', 'Wrecking Ball', 'Doomfist', 'Hazard'],
                 damage: ['Tracer', 'Genji', 'Sombra', 'Venture'],
                 support: ['Lucio', 'Ana', 'Zenyatta', 'Kiriko', 'Moira']
             },
             strategy: 'Highly mobile composition focused on diving backline targets and securing eliminations through coordinated attacks.',
-            tips: [
-                'Use Winston\'s jump pack to initiate engagements',
-                'Follow up with damage heroes to secure eliminations',
-                'Coordinate dives on high-value targets like supports',
-                'Use vertical mobility to access high ground positions'
-            ]
+            
         },
         brawl: {
             name: 'Brawl Composition',
@@ -102,12 +97,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 support: ['Lucio', 'Moira', 'Brigitte', 'Ana', 'Lifeweaver', 'Wuyang']
             },
             strategy: 'Close-range fighting composition that excels at controlling space and winning direct team fights through sustain and area damage.',
-            tips: [
-                'Use Lucio\'s speed boost to engage or disengage quickly',
-                'Control choke points with Reinhardt\'s shield and Mei\'s wall',
-                'Focus on staying grouped for maximum healing efficiency',
-                'Rotate as a unit to maintain team cohesion'
-            ]
+            
         },
         poke: {
             name: 'Poke Composition',
@@ -117,12 +107,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 support: ['Ana', 'Baptiste', 'Zenyatta', 'Mercy', 'Illari', 'Juno', 'Wuyang']
             },
             strategy: 'Long-range composition that focuses on dealing damage from a distance while maintaining safe positioning.',
-            tips: [
-                'Establish control of high ground or long sightlines',
-                'Use shield and cover to minimize incoming damage',
-                'Apply consistent pressure to force resource usage',
-                'Avoid being forced into close-range engagements'
-            ]
+            
         }
     };
 
@@ -312,6 +297,97 @@ document.addEventListener('DOMContentLoaded', function() {
             'lijiang': 40, 'aatlis': 40, 'new-junk-city': 40, 'suravasa': 40
         }
     };
+
+    // Google Gemini AI Integration for composition descriptions and tips
+    async function getAICompDescription(compName, mapName, tanks, damage, support) {
+        const apiKey = config.GEMINI_API_KEY;
+        
+        // Extract hero names from the arrays
+        const tankNames = tanks.map(h => h.hero).join(', ');
+        const damageNames = damage.map(h => h.hero).join(', ');
+        const supportNames = support.map(h => h.hero).join(', ');
+        
+        const prompt = `Overwatch 2 ${compName} on ${mapName}.
+Team: Tanks: ${tankNames}, Damage: ${damageNames}, Support: ${supportNames}
+
+Return ONLY this JSON (no markdown):
+{"description":"2 sentence analysis","tips":["tip 1","tip 2","tip 3"]}`;
+
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: prompt
+                        }]
+                    }],
+                    generationConfig: {
+                        temperature: 0.7,
+                        maxOutputTokens: 2048
+                    }
+                })
+            });
+            
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error('Gemini API error:', errorData);
+                throw new Error(`Gemini API request failed: ${response.status} ${response.statusText}`);
+            }
+            
+            const data = await response.json();
+            console.log('Gemini API response:', data);
+            console.log('Candidates:', data.candidates);
+            console.log('First candidate:', data.candidates?.[0]);
+            console.log('Content:', data.candidates?.[0]?.content);
+            console.log('Parts:', data.candidates?.[0]?.content?.parts);
+            
+            // Check if response has expected structure
+            if (!data.candidates || !data.candidates[0]) {
+                console.error('No candidates in response');
+                return null;
+            }
+            
+            if (!data.candidates[0].content) {
+                console.error('No content in candidate');
+                return null;
+            }
+            
+            if (!data.candidates[0].content.parts || !data.candidates[0].content.parts[0]) {
+                console.error('No parts in content');
+                return null;
+            }
+            
+            const generatedText = data.candidates[0].content.parts[0].text;
+            console.log('Generated text:', generatedText);
+            
+            // Remove markdown code blocks if present
+            let cleanedText = generatedText.trim();
+            if (cleanedText.startsWith('```json')) {
+                cleanedText = cleanedText.replace(/```json\n?/g, '').replace(/```\n?/g, '');
+            } else if (cleanedText.startsWith('```')) {
+                cleanedText = cleanedText.replace(/```\n?/g, '');
+            }
+            
+            // Parse the JSON response
+            try {
+                const parsed = JSON.parse(cleanedText.trim());
+                console.log('Parsed AI response:', parsed);
+                return parsed;
+            } catch (parseError) {
+                console.error('Error parsing Gemini response:', parseError);
+                console.log('Raw response:', generatedText);
+                console.log('Cleaned text:', cleanedText);
+                return null;
+            }
+        } catch (error) {
+            console.error('Error getting AI description:', error);
+            return null;
+        }
+    }
 
     // Screen navigation functions
     function showMainInterface() {
@@ -660,13 +736,19 @@ function displayCompositionCard(compData, isPrimary, container) {
         titleElement.textContent = `${originalTitle} - ${comp.name}`;
     }
     
+    // Get best heroes for this strategy on this map
+    const bestTanks = getBestHeroesForStrategy(selectedMap, key, 'tank', bannedHeroes).slice(0, 2);
+    const bestDamage = getBestHeroesForStrategy(selectedMap, key, 'damage', bannedHeroes).slice(0, 3);
+    const bestSupport = getBestHeroesForStrategy(selectedMap, key, 'support', bannedHeroes).slice(0, 2);
+    
     // Create the composition details div
     const compDetails = document.createElement('div');
     compDetails.classList.add('comp-details');
     
-    // Add strategy description (p)
+    // Add strategy description (p) with loading state
     const strategyDesc = document.createElement('p');
-    strategyDesc.textContent = comp.strategy;
+    strategyDesc.classList.add('ai-description');
+    strategyDesc.innerHTML = '<em>Generating AI analysis...</em>';
     compDetails.appendChild(strategyDesc);
     
     // Add effectiveness bar
@@ -695,7 +777,7 @@ function displayCompositionCard(compData, isPrimary, container) {
     
     compDetails.appendChild(strengthContainer);
     
-    // Add strategy tips
+    // Add strategy tips with loading state
     const tipsContainer = document.createElement('div');
     tipsContainer.classList.add('strategy-tips');
     
@@ -704,19 +786,53 @@ function displayCompositionCard(compData, isPrimary, container) {
     tipsContainer.appendChild(tipsHeader);
     
     const tipsList = document.createElement('ul');
-    comp.tips.forEach(tip => {
-        const listItem = document.createElement('li');
-        listItem.textContent = tip;
-        tipsList.appendChild(listItem);
-    });
+    const loadingTip = document.createElement('li');
+    loadingTip.innerHTML = '<em>Generating tips...</em>';
+    tipsList.appendChild(loadingTip);
     tipsContainer.appendChild(tipsList);
     
     compDetails.appendChild(tipsContainer);
     
-    // Get best heroes for this strategy on this map
-    const bestTanks = getBestHeroesForStrategy(selectedMap, key, 'tank', bannedHeroes).slice(0, 2);
-    const bestDamage = getBestHeroesForStrategy(selectedMap, key, 'damage', bannedHeroes).slice(0, 3);
-    const bestSupport = getBestHeroesForStrategy(selectedMap, key, 'support', bannedHeroes).slice(0, 2);
+    // Get AI-generated description and tips
+    getAICompDescription(comp.name, selectedMap, bestTanks, bestDamage, bestSupport)
+        .then(aiContent => {
+            if (aiContent) {
+                // Update description with AI content
+                strategyDesc.textContent = aiContent.description;
+                strategyDesc.classList.add('fade-in');
+                
+                // Update tips with AI content
+                tipsList.innerHTML = '';
+                aiContent.tips.forEach(tip => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = tip;
+                    tipsList.appendChild(listItem);
+                });
+                tipsContainer.classList.add('fade-in');
+            } else {
+                // Fallback to static content if AI fails
+                strategyDesc.textContent = comp.strategy;
+                
+                tipsList.innerHTML = '';
+                comp.tips.forEach(tip => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = tip;
+                    tipsList.appendChild(listItem);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error getting AI description:', error);
+            // Fallback to static content on error
+            strategyDesc.textContent = comp.strategy;
+            
+            tipsList.innerHTML = '';
+            comp.tips.forEach(tip => {
+                const listItem = document.createElement('li');
+                listItem.textContent = tip;
+                tipsList.appendChild(listItem);
+            });
+        });
     
     // Create hero recommendations HTML
     const heroRecommendations = document.createElement('div');
