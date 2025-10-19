@@ -157,7 +157,7 @@
     background-image: url('../images/heroes/doomfist.png');
 }
 
-.hero-image[data-hero="dva"] {
+.hero-image[data-hero="d-va"] {
     background-image: url('../images/heroes/dva.png');
 }
 
@@ -254,7 +254,7 @@
     background-image: url('../images/heroes/sojourn.png');
 }
 
-.hero-image[data-hero="soldier76"] {
+.hero-image[data-hero="soldier-76"] {
     background-image: url('../images/heroes/soldier76.png');
 }
 
