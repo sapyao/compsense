@@ -300,8 +300,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Google Gemini AI Integration for composition descriptions and tips
     async function getAICompDescription(compName, mapName, tanks, damage, support) {
-        const apiKey = config.GEMINI_API_KEY;
-        
         // Extract hero names from the arrays
         const tankNames = tanks.map(h => h.hero).join(', ');
         const damageNames = damage.map(h => h.hero).join(', ');
@@ -314,7 +312,7 @@ Return ONLY this JSON (no markdown):
 {"description":"2 sentence analysis","tips":["tip 1","tip 2","tip 3"]}`;
 
         try {
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+            const response = await fetch('/.netlify/functions/gemini-proxy', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
