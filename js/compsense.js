@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
             heroes: {
                 tank: ['Winston', 'D.Va', 'Wrecking Ball', 'Doomfist', 'Hazard'],
                 damage: ['Tracer', 'Genji', 'Sombra', 'Venture'],
-                support: ['Lucio', 'Ana', 'Zenyatta', 'Kiriko', 'Moira']
+                support: ['Lúcio', 'Ana', 'Zenyatta', 'Kiriko', 'Moira']
             },
             strategy: 'Highly mobile composition focused on diving backline targets and securing eliminations through coordinated attacks.',
             
@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
             heroes: {
                 tank: ['Reinhardt', 'Zarya', 'Junker Queen', 'Mauga', 'Orisa', 'Ramattra'],
                 damage: ['Reaper', 'Mei', 'Cassidy', 'Symmetra', 'Bastion', 'Venture'],
-                support: ['Lucio', 'Moira', 'Brigitte', 'Ana', 'Lifeweaver', 'Wuyang']
+                support: ['Lúcio', 'Moira', 'Brigitte', 'Ana', 'Lifeweaver', 'Wuyang']
             },
             strategy: 'Close-range fighting composition that excels at controlling space and winning direct team fights through sustain and area damage.',
             
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
             name: 'Poke Composition',
             heroes: {
                 tank: ['Sigma', 'Orisa', 'Roadhog', 'Ramattra'],
-                damage: ['Soldier: 76', 'Widowmaker', 'Hanzo', 'Ashe', 'Junkrat', 'Sojourn', 'Echo', 'Pharah', 'Freja', 'Torbjorn', 'Venture'],
+                damage: ['Soldier: 76', 'Widowmaker', 'Hanzo', 'Ashe', 'Junkrat', 'Sojourn', 'Echo', 'Pharah', 'Freja', 'Torbjörn', 'Venture'],
                 support: ['Ana', 'Baptiste', 'Zenyatta', 'Mercy', 'Illari', 'Juno', 'Wuyang']
             },
             strategy: 'Long-range composition that focuses on dealing damage from a distance while maintaining safe positioning.',
@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'lijiang': 90,
             'esperanca': 40
         },
-        'Torbjorn': {
+        'Torbjörn': {
             'oasis': 90,
             'havana': 40, 'junkertown': 40
         },
@@ -275,7 +275,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'numbani': 90,
             'havana': 40, 'lijiang': 40
         },
-        'Lucio': {
+        'Lúcio': {
             'ilios': 90,
             'havana': 40, 'gibraltar': 40
         },
@@ -300,6 +300,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Google Gemini AI Integration for composition descriptions and tips
     async function getAICompDescription(compName, mapName, tanks, damage, support) {
+        const apiKey = config.GEMINI_API_KEY;
+        
         // Extract hero names from the arrays
         const tankNames = tanks.map(h => h.hero).join(', ');
         const damageNames = damage.map(h => h.hero).join(', ');
@@ -312,7 +314,7 @@ Return ONLY this JSON (no markdown):
 {"description":"2 sentence analysis","tips":["tip 1","tip 2","tip 3"]}`;
 
         try {
-            const response = await fetch('/.netlify/functions/gemini-proxy', {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -505,10 +507,22 @@ Return ONLY this JSON (no markdown):
     
     if (bannedHeroes.length > 0) {
         bannedHeroes.forEach(hero => {
-            const heroSpan = document.createElement('div');
-            heroSpan.classList.add('banned-hero');
-            heroSpan.textContent = hero;
-            bannedHeroesList.appendChild(heroSpan);
+            const heroDiv = document.createElement('div');
+            heroDiv.classList.add('banned-hero');
+            
+            // Add hero image
+            const heroImage = document.createElement('div');
+            heroImage.classList.add('hero-image');
+            heroImage.setAttribute('data-hero', hero.toLowerCase().replace(/[:\s\.\']+/g, '-'));
+            heroDiv.appendChild(heroImage);
+            
+            // Add hero name
+            const heroName = document.createElement('span');
+            heroName.classList.add('hero-name');
+            heroName.textContent = hero;
+            heroDiv.appendChild(heroName);
+            
+            bannedHeroesList.appendChild(heroDiv);
         });
     } else {
         const noHeroesSpan = document.createElement('div');
@@ -742,13 +756,7 @@ function displayCompositionCard(compData, isPrimary, container) {
     // Create the composition details div
     const compDetails = document.createElement('div');
     compDetails.classList.add('comp-details');
-    
-    // Add strategy description (p) with loading state
-    const strategyDesc = document.createElement('p');
-    strategyDesc.classList.add('ai-description');
-    strategyDesc.innerHTML = '<em>Generating AI analysis...</em>';
-    compDetails.appendChild(strategyDesc);
-    
+
     // Add effectiveness bar
     const strengthContainer = document.createElement('div');
     strengthContainer.classList.add('comp-strength');
@@ -774,6 +782,12 @@ function displayCompositionCard(compData, isPrimary, container) {
     strengthContainer.appendChild(strengthValue);
     
     compDetails.appendChild(strengthContainer);
+    
+    // Add strategy description (p) with loading state
+    const strategyDesc = document.createElement('p');
+    strategyDesc.classList.add('ai-description');
+    strategyDesc.innerHTML = '<em>Generating AI analysis...</em>';
+    compDetails.appendChild(strategyDesc);
     
     // Add strategy tips with loading state
     const tipsContainer = document.createElement('div');

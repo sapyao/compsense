@@ -266,7 +266,7 @@
     background-image: url('../images/heroes/symmetra.png');
 }
 
-.hero-image[data-hero="torbjorn"] {
+.hero-image[data-hero="torbjörn"] {
     background-image: url('../images/heroes/torbjorn.png');
 }
 
@@ -311,7 +311,7 @@
     background-image: url('../images/heroes/lifeweaver.png');
 }
 
-.hero-image[data-hero="lucio"] {
+.hero-image[data-hero="lúcio"] {
     background-image: url('../images/heroes/lucio.png');
 }
 
